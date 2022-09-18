@@ -1,21 +1,70 @@
-import Document, { Head, Html, Main, NextScript } from 'next/document';
+// ** React Import
+import { Children } from 'react'
 
-import { AppConfig } from '@/utils/AppConfig';
+// ** Next Import
+import Document, { Html, Head, Main, NextScript } from 'next/document'
 
-// Need to create a custom _document because i18n support is not compatible with `next export`.
-class MyDocument extends Document {
-  // eslint-disable-next-line class-methods-use-this
+// ** Emotion Imports
+import createEmotionServer from '@emotion/server/create-instance'
+
+// ** Utils Imports
+import { createEmotionCache } from 'src/@core/utils/create-emotion-cache'
+
+class CustomDocument extends Document {
   render() {
     return (
-      <Html lang={AppConfig.locale}>
-        <Head />
+      <Html lang='en'>
+        <Head>
+          <link rel='preconnect' href='https://fonts.googleapis.com' />
+          <link rel='preconnect' href='https://fonts.gstatic.com' />
+          <link
+            rel='stylesheet'
+            href='https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap'
+          />
+          <link rel='apple-touch-icon' sizes='180x180' href='/images/apple-touch-icon.png' />
+          <link rel='shortcut icon' href='/images/favicon.png' />
+        </Head>
         <body>
           <Main />
           <NextScript />
         </body>
       </Html>
-    );
+    )
   }
 }
 
-export default MyDocument;
+CustomDocument.getInitialProps = async ctx => {
+  const originalRenderPage = ctx.renderPage
+  const cache = createEmotionCache()
+  const { extractCriticalToChunks } = createEmotionServer(cache)
+
+  ctx.renderPage = () =>
+    originalRenderPage({
+      enhanceApp: App => props =>
+        (
+          <App
+            {...props} // @ts-ignore
+            emotionCache={cache}
+          />
+        )
+    })
+
+  const initialProps = await Document.getInitialProps(ctx)
+  const emotionStyles = extractCriticalToChunks(initialProps.html)
+  const emotionStyleTags = emotionStyles.styles.map(style => {
+    return (
+      <style
+        key={style.key}
+        dangerouslySetInnerHTML={{ __html: style.css }}
+        data-emotion={`${style.key} ${style.ids.join(' ')}`}
+      />
+    )
+  })
+
+  return {
+    ...initialProps,
+    styles: [...Children.toArray(initialProps.styles), ...emotionStyleTags]
+  }
+}
+
+export default CustomDocument

@@ -1,17 +1,18 @@
-/* eslint-disable import/no-extraneous-dependencies */
-const withBundleAnalyzer = require('@next/bundle-analyzer')({
-  enabled: process.env.ANALYZE === 'true',
-});
+const path = require('path')
 
-module.exports = withBundleAnalyzer({
-  eslint: {
-    dirs: ['.'],
-  },
-  poweredByHeader: false,
+module.exports = {
   trailingSlash: true,
-  basePath: '',
-  // The starter code load resources from `public` folder with `router.basePath` in React components.
-  // So, the source code is "basePath-ready".
-  // You can remove `basePath` if you don't need it.
-  reactStrictMode: true,
-});
+  reactStrictMode: false,
+  experimental: {
+    esmExternals: false,
+    jsconfigPaths: true // enables it for both jsconfig.json and tsconfig.json
+  },
+  webpack: config => {
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      apexcharts: path.resolve(__dirname, './node_modules/apexcharts-clevision')
+    }
+
+    return config
+  }
+}
