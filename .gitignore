@@ -41,3 +41,6 @@ local
 
 # vercel
 .vercel
+
+# unwanted files
+package-lock.json
