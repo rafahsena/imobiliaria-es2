@@ -1,18 +1,15 @@
 version: '3.8'
 services:
   db:
-    image: mysql:8.0
-    cap_add:
-      - SYS_NICE
+    image: postgres:14.1-alpine
     restart: always
     environment:
-      - MYSQL_DATABASE=imobiliaria
-      - MYSQL_ROOT_PASSWORD=es2rox
+      - POSTGRES_USER=imobiliaria
+      - POSTGRES_PASSWORD=es2rox
     ports:
-      - '33060:3306'
-    volumes:
-      - db:/var/lib/mysql
-      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - '5432:5432'
+    volumes: 
+      - ./db:/var/lib/postgresql/data
 volumes:
   db:
     driver: local
