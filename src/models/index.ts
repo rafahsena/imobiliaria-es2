@@ -1,4 +1,4 @@
-export interface endereco{
+export interface Endereco {
   logradouro: string;
   cidade: string;
   estado: string;
@@ -8,21 +8,21 @@ export interface endereco{
   numero: string;
 }
 
-export interface imovel {
+export interface Imovel {
   id: number;
   disponivel: boolean;
   area: number;
   iptu: number;
-  endereco: endereco;
+  endereco: Endereco;
   tipo: string;
 }
 
-export interface anuncio {
+export interface Anuncio {
   id: number;
   titulo: string;
   descricao: string;
   dataDeCriacao: Date;
   valor: number;
   tipo: string;
-  imovel: imovel | undefined;
+  imovel: Imovel | undefined;
 }
