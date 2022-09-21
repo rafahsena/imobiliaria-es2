@@ -21,7 +21,7 @@ export interface Anuncio {
   id: number;
   titulo: string;
   descricao: string;
-  dataDeCriacao: Date;
+  dataDeCriacao: string;
   valor: number;
   tipo: string;
   imovel: Imovel | undefined;

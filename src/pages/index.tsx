@@ -21,7 +21,8 @@ import StatisticsCard from "src/views/dashboard/StatisticsCard";
 import WeeklyOverview from "src/views/dashboard/WeeklyOverview";
 import DepositWithdraw from "src/views/dashboard/DepositWithdraw";
 import SalesByCountries from "src/views/dashboard/SalesByCountries";
-import ListaDeAnuncios from "./pages/listaDeAnuncios";
+import ListaDeAnuncios from "./lista-anuncios";
+import DetalhesImovel from "./detalhes-imovel/[id]";
 
 const Dashboard = () => {
   return <ListaDeAnuncios />;
