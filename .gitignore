@@ -35,6 +35,7 @@ yarn-error.log*
 
 # dotenv local files
 .env*.local
+.env
 
 # local folder
 local
@@ -44,3 +45,5 @@ local
 
 # unwanted files
 package-lock.json
+next-env.d.ts
+db
