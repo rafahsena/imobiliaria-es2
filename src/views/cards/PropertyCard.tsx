@@ -7,7 +7,7 @@ import CardContent from "@mui/material/CardContent";
 import CardActions from "@mui/material/CardActions";
 import { Imovel } from "src/models";
 import AddressCard from "./AddressCard";
-import { CurrencyBrl, Home, CheckCircle, CloseCircle } from "mdi-material-ui";
+import { CurrencyUsd, Home, CheckCircle, CloseCircle } from "mdi-material-ui";
 
 type PropertyCardProps = {
   imovel: Imovel;
@@ -19,17 +19,16 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ imovel }) => {
   return (
     <Card>
       <CardContent>
-        <Box
-          sx={{
-            mb: 1,
-            ml: 8,
-            display: "flex",
-            flexWrap: "wrap",
-            alignItems: "center",
-          }}
-        >
-          <Typography variant="body2">
-            {`${imovel.tipo} | ${imovel.area} m²`}
+        <Box marginBottom={1}>
+          <Typography display="flex" alignItems="center" variant="body2">
+            <Home />
+            <Box marginLeft={2}>{`${imovel.tipo} | ${imovel.area} m²`}</Box>
+          </Typography>
+        </Box>
+        <Box marginBottom={1}>
+          <Typography display="flex" alignItems="center" variant="body2">
+            <CurrencyUsd />
+            <Box marginLeft={2}>IPTU: {imovel.iptu} R$</Box>
           </Typography>
         </Box>
         <Box marginBottom={5}>
