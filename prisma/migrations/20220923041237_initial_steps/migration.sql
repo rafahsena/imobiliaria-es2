@@ -18,10 +18,18 @@ CREATE TABLE "Imovel" (
     "disponivel" BOOLEAN NOT NULL,
     "area" TEXT NOT NULL,
     "iptu" MONEY NOT NULL,
-    "tipo" TEXT NOT NULL,
     "enderecoId" INTEGER NOT NULL,
+    "tipoId" INTEGER,
 
     CONSTRAINT "Imovel_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Tipo" (
+    "id" SERIAL NOT NULL,
+    "nome" TEXT NOT NULL,
+
+    CONSTRAINT "Tipo_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -100,6 +108,9 @@ CREATE INDEX "_AnuncioToInteressado_B_index" ON "_AnuncioToInteressado"("B");
 
 -- AddForeignKey
 ALTER TABLE "Imovel" ADD CONSTRAINT "Imovel_enderecoId_fkey" FOREIGN KEY ("enderecoId") REFERENCES "Endereco"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Imovel" ADD CONSTRAINT "Imovel_tipoId_fkey" FOREIGN KEY ("tipoId") REFERENCES "Tipo"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Anuncio" ADD CONSTRAINT "Anuncio_imovelId_fkey" FOREIGN KEY ("imovelId") REFERENCES "Imovel"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

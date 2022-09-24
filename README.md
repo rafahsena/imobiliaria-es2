@@ -56,6 +56,19 @@ yarn dev
 
 Open http://localhost:3000 with your favorite browser to see your project.
 
+### Setting the database
+
+Run the following command to set up your database:
+
+```shell
+$ npx prisma migrate dev
+```
+
+To visualize the database using prisma studio:
+```shell 
+$ npx prisma studio 
+```
+
 ```shell
 .
 ├── README.md                       # README file

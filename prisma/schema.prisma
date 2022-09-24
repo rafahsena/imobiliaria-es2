@@ -28,11 +28,18 @@ model Imovel {
   disponivel Boolean
   area       String
   iptu       Decimal    @db.Money
-  tipo       String
   endereco   Endereco   @relation(fields: [enderecoId], references: [id])
   enderecoId Int
   anuncio    Anuncio[]
   contrato   Contrato[]
+  tipo       Tipo?      @relation(fields: [tipoId], references: [id])
+  tipoId     Int?
+}
+
+model Tipo {
+  id     Int      @id @default(autoincrement())
+  nome   String
+  imovel Imovel[]
 }
 
 model Anuncio {
