@@ -23,7 +23,7 @@ const mock = () => {
       area: 100,
       iptu: 900,
       endereco: {
-        logradouro: "Rua 1",
+        logradouro: "Avenida 7",
         cidade: "Aracaju",
         estado: "Sergipe",
         pais: "Brasil",
@@ -38,7 +38,7 @@ const mock = () => {
       area: 100,
       iptu: 900,
       endereco: {
-        logradouro: "Rua 1",
+        logradouro: "Travessa AB",
         cidade: "Aracaju",
         estado: "Sergipe",
         pais: "Brasil",
@@ -53,7 +53,7 @@ const mock = () => {
       area: 100,
       iptu: 900,
       endereco: {
-        logradouro: "Rua 1",
+        logradouro: "Rua 13",
         cidade: "Aracaju",
         estado: "Sergipe",
         pais: "Brasil",

@@ -21,6 +21,11 @@ const navigation = (): VerticalNavItemsType => {
       path: '/'
     },
     {
+      title: 'Imóveis',
+      icon: HomeOutline,
+      path: '/lista-imoveis'
+    },
+    {
       title: 'Account Settings',
       icon: AccountCogOutline,
       path: '/account-settings'
