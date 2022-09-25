@@ -84,7 +84,7 @@ const FormularioImovel = () => {
               <TextField
                 fullWidth
                 type="number"
-                label="Área"
+                label="Área (m²)"
                 value={area}
                 onChange={(value) => setArea(value.target.value as any)}
               />
@@ -93,7 +93,7 @@ const FormularioImovel = () => {
               <TextField
                 fullWidth
                 type="number"
-                label="IPTU"
+                label="IPTU (R$)"
                 value={iptu}
                 onChange={(value) => setIptu(value.target.value as any)}
               />
