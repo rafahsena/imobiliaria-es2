@@ -8,14 +8,19 @@ import CardActions from "@mui/material/CardActions";
 import { Imovel } from "src/models";
 import AddressCard from "./AddressCard";
 import { CurrencyUsd, Home, CheckCircle, CloseCircle } from "mdi-material-ui";
+import { MouseEventHandler } from "react";
 
 type PropertyCardProps = {
   imovel: Imovel;
-  onCreateAdClick: Function;
-  onEditPropertyClick: Function;
+  onCreateAdClick: MouseEventHandler<HTMLButtonElement>;
+  onEditPropertyClick: MouseEventHandler<HTMLButtonElement>;
 };
 
-const PropertyCard: React.FC<PropertyCardProps> = ({ imovel }) => {
+const PropertyCard: React.FC<PropertyCardProps> = ({
+  imovel,
+  onCreateAdClick,
+  onEditPropertyClick,
+}) => {
   return (
     <Card>
       <CardContent>
@@ -53,8 +58,10 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ imovel }) => {
         </Box>
       </CardContent>
       <CardActions className="card-action-dense">
-        <Button>Editar Imóvel</Button>
-        {imovel.disponivel && <Button>Criar Anúncio</Button>}
+        <Button onClick={onEditPropertyClick}>Editar Imóvel</Button>
+        {imovel.disponivel && (
+          <Button onClick={onCreateAdClick}>Criar Anúncio</Button>
+        )}
       </CardActions>
     </Card>
   );
