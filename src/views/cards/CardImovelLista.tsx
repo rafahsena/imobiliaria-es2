@@ -29,7 +29,7 @@ const CardImovelLista = (imovel: Imovel) => {
       <Button
         variant="contained"
         fullWidth
-        onClick={() => router.push(`/imovel-detalhes/${imovel.id}`)}
+        onClick={() => router.push(`/detalhes-imovel/${imovel.id}`)}
         sx={{
           py: 2.5,
           borderTopLeftRadius: 0,
