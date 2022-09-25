@@ -9,7 +9,7 @@ import conversions from "src/utils/conversions";
 
 const AdCardList = (anuncio: Anuncio) => {
   const router = useRouter();
-  const {moneyFormat} = conversions();
+  const { moneyFormat } = conversions();
   return (
     <Card>
       <CardContent
@@ -29,12 +29,11 @@ const AdCardList = (anuncio: Anuncio) => {
         <Typography sx={{ marginBottom: 2 }}>
           {moneyFormat(anuncio.valor)}
         </Typography>
-
       </CardContent>
       <Button
         variant="contained"
         fullWidth
-        onClick={() => router.push(`/detalhes-imovel/${anuncio.id}`)}
+        onClick={() => router.push(`/detalhes-anuncio/${anuncio.id}`)}
         sx={{
           py: 2.5,
           borderTopLeftRadius: 0,
