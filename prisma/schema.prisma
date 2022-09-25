@@ -1,0 +1,92 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Endereco {
+  id          Int       @id @default(autoincrement())
+  logradouro  String
+  cidade      String
+  estado      String
+  cep         String
+  pais        String
+  complemento String?
+  numero      String
+  imovel      Imovel[]
+  cliente     Cliente[]
+}
+
+model Imovel {
+  id         Int        @id @default(autoincrement())
+  disponivel Boolean
+  area       String
+  iptu       Decimal    @db.Money
+  endereco   Endereco   @relation(fields: [enderecoId], references: [id])
+  enderecoId Int
+  anuncio    Anuncio[]
+  contrato   Contrato[]
+  tipo       Tipo?      @relation(fields: [tipoId], references: [id])
+  tipoId     Int?
+}
+
+model Tipo {
+  id     Int      @id @default(autoincrement())
+  nome   String
+  imovel Imovel[]
+}
+
+model Anuncio {
+  id            Int           @id @default(autoincrement())
+  titulo        String
+  descricao     String
+  dataDeCriacao DateTime
+  valor         Decimal       @db.Money
+  tipo          String
+  imovel        Imovel?       @relation(fields: [imovelId], references: [id])
+  imovelId      Int           @unique
+  interessado   Interessado[]
+}
+
+model Interessado {
+  id       Int       @id @default(autoincrement())
+  nome     String
+  telefone String
+  email    String
+  anuncio  Anuncio[]
+}
+
+model Contrato {
+  id             Int      @id @default(autoincrement())
+  valor          Decimal  @db.Money
+  vencimento     DateTime
+  tipo           String   @db.Char(2)
+  dataAssinatura DateTime
+  imovel         Imovel?  @relation(fields: [imovelId], references: [id])
+  imovelId       Int?
+}
+
+model Cliente {
+  id             Int      @id @default(autoincrement())
+  nome           String
+  cpf            String
+  rg             String?
+  dataNascimento DateTime
+  telefone       String
+  email          String
+  endereco       Endereco @relation(fields: [enderecoId], references: [id])
+  enderecoId     Int
+}
+
+model Funcionario {
+  id    Int     @id @default(autoincrement())
+  nome  String
+  email String
+  admin Boolean
+}
