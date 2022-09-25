@@ -11,6 +11,8 @@ import CardHeader from "@mui/material/CardHeader";
 import CardContent from "@mui/material/CardContent";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
+import { cadastrarEndereco } from "src/services/endereco";
+import { cadastrarImovel } from "src/services/imovel";
 
 const FormularioImovel = () => {
   const [disponivel, setDisponivel] = useState(1);
@@ -26,31 +28,31 @@ const FormularioImovel = () => {
   const [complemento, setComplemento] = useState("");
   const [numero, setNumero] = useState("");
 
-  const handleSubmit = (e: any) => {
-    const imovel = {
-      disponivel: !!disponivel,
-      area,
-      iptu,
-      tipoImovel,
-    };
-
-    const endereco = {
-      logradouro,
-      cidade,
-      estado,
-      cep,
-      pais,
-      complemento,
-      numero,
-    };
-
-    console.log({
-      ...imovel,
-      ...endereco,
-    });
-
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
+
+    try {
+      const imovel = {
+        disponivel: !!disponivel,
+        area,
+        iptu,
+        tipo: tipoImovel,
+      };
+
+      const endereco = {
+        logradouro,
+        cidade,
+        estado,
+        cep,
+        pais,
+        complemento,
+        numero,
+      };
+
+      await cadastrarImovel({ ...imovel, endereco });
+    } catch (err) {}
   };
+
   return (
     <Card>
       <form onSubmit={handleSubmit}>
@@ -86,7 +88,7 @@ const FormularioImovel = () => {
                 type="number"
                 label="Área (m²)"
                 value={area}
-                onChange={(value) => setArea(value.target.value as any)}
+                onChange={(value) => setArea(Number(value.target.value))}
               />
             </Grid>
             <Grid item xs={12}>
@@ -95,7 +97,7 @@ const FormularioImovel = () => {
                 type="number"
                 label="IPTU (R$)"
                 value={iptu}
-                onChange={(value) => setIptu(value.target.value as any)}
+                onChange={(value) => setIptu(Number(value.target.value))}
               />
             </Grid>
           </Grid>

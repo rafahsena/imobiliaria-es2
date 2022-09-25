@@ -9,7 +9,7 @@ export interface Endereco {
 }
 
 export interface Imovel {
-  id: number;
+  id?: number;
   disponivel: boolean;
   area: number;
   iptu: number;
