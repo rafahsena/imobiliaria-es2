@@ -12,13 +12,9 @@ import CardContent from "@mui/material/CardContent";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 
-interface State {
-  password: string;
-  showPassword: boolean;
-}
-
 const FormularioImovel = () => {
   const [disponivel, setDisponivel] = useState(1);
+  const [tipoImovel, setTipoImovel] = useState("");
   const [area, setArea] = useState(0);
   const [iptu, setIptu] = useState(0);
 
@@ -35,6 +31,7 @@ const FormularioImovel = () => {
       disponivel: !!disponivel,
       area,
       iptu,
+      tipoImovel,
     };
 
     const endereco = {
@@ -74,6 +71,14 @@ const FormularioImovel = () => {
                 <MenuItem value={1}>Disponível</MenuItem>
                 <MenuItem value={0}>Indisponível</MenuItem>
               </Select>
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                label="Tipo do imóvel"
+                value={tipoImovel}
+                onChange={(value) => setTipoImovel(value.target.value)}
+              />
             </Grid>
             <Grid item xs={12}>
               <TextField
