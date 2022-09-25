@@ -7,3 +7,7 @@ export const cadastrarEndereco = async (endereco: Endereco) => {
     data: endereco,
   });
 };
+
+export const getEndereco = async (id: number) => {
+  return await prisma.endereco.findFirst({ where: { id } });
+};
