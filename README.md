@@ -58,7 +58,23 @@ Open http://localhost:3000 with your favorite browser to see your project.
 
 ### Setting the database
 
-Run the following command to set up your database:
+First things first, create your .env file by running the following command:
+
+```shell
+$ cp .env.example .env
+```
+
+Then you need to copy the environment values from the _docker-compose.yml_ file to fill in the default values of the DATABASE_URL variable on .env file:
+
+```DATABASE_URL="postgresql://user:pass@host:5432/dbname"```
+
+To get your host ip, simply inspect all your docker containers and copy the one corresponding to your db
+
+```shell
+$ docker inspect --format='{{.Name}} {{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' $(docker ps -q)
+```
+
+By completing the filling process on the .env file, run the following command to run the migrations over your database:
 
 ```shell
 $ npx prisma migrate dev
@@ -68,6 +84,8 @@ To visualize the database using prisma studio:
 ```shell 
 $ npx prisma studio 
 ```
+
+### Project Structure
 
 ```shell
 .
