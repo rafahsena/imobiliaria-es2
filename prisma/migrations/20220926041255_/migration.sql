@@ -16,7 +16,7 @@ CREATE TABLE "Endereco" (
 CREATE TABLE "Imovel" (
     "id" SERIAL NOT NULL,
     "disponivel" BOOLEAN NOT NULL,
-    "area" TEXT NOT NULL,
+    "area" DOUBLE PRECISION NOT NULL,
     "iptu" MONEY NOT NULL,
     "enderecoId" INTEGER NOT NULL,
     "tipoId" INTEGER,
@@ -56,6 +56,15 @@ CREATE TABLE "Interessado" (
 );
 
 -- CreateTable
+CREATE TABLE "InteressadosOnAnuncios" (
+    "interessadoId" INTEGER NOT NULL,
+    "anuncioId" INTEGER NOT NULL,
+    "assignedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "InteressadosOnAnuncios_pkey" PRIMARY KEY ("interessadoId","anuncioId")
+);
+
+-- CreateTable
 CREATE TABLE "Contrato" (
     "id" SERIAL NOT NULL,
     "valor" MONEY NOT NULL,
@@ -86,25 +95,16 @@ CREATE TABLE "Funcionario" (
     "id" SERIAL NOT NULL,
     "nome" TEXT NOT NULL,
     "email" TEXT NOT NULL,
-    "admin" BOOLEAN NOT NULL,
+    "password" TEXT NOT NULL,
 
     CONSTRAINT "Funcionario_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "_AnuncioToInteressado" (
-    "A" INTEGER NOT NULL,
-    "B" INTEGER NOT NULL
 );
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Anuncio_imovelId_key" ON "Anuncio"("imovelId");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "_AnuncioToInteressado_AB_unique" ON "_AnuncioToInteressado"("A", "B");
-
--- CreateIndex
-CREATE INDEX "_AnuncioToInteressado_B_index" ON "_AnuncioToInteressado"("B");
+CREATE UNIQUE INDEX "Funcionario_email_key" ON "Funcionario"("email");
 
 -- AddForeignKey
 ALTER TABLE "Imovel" ADD CONSTRAINT "Imovel_enderecoId_fkey" FOREIGN KEY ("enderecoId") REFERENCES "Endereco"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -116,13 +116,13 @@ ALTER TABLE "Imovel" ADD CONSTRAINT "Imovel_tipoId_fkey" FOREIGN KEY ("tipoId") 
 ALTER TABLE "Anuncio" ADD CONSTRAINT "Anuncio_imovelId_fkey" FOREIGN KEY ("imovelId") REFERENCES "Imovel"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "InteressadosOnAnuncios" ADD CONSTRAINT "InteressadosOnAnuncios_interessadoId_fkey" FOREIGN KEY ("interessadoId") REFERENCES "Interessado"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "InteressadosOnAnuncios" ADD CONSTRAINT "InteressadosOnAnuncios_anuncioId_fkey" FOREIGN KEY ("anuncioId") REFERENCES "Anuncio"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "Contrato" ADD CONSTRAINT "Contrato_imovelId_fkey" FOREIGN KEY ("imovelId") REFERENCES "Imovel"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Cliente" ADD CONSTRAINT "Cliente_enderecoId_fkey" FOREIGN KEY ("enderecoId") REFERENCES "Endereco"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "_AnuncioToInteressado" ADD CONSTRAINT "_AnuncioToInteressado_A_fkey" FOREIGN KEY ("A") REFERENCES "Anuncio"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "_AnuncioToInteressado" ADD CONSTRAINT "_AnuncioToInteressado_B_fkey" FOREIGN KEY ("B") REFERENCES "Interessado"("id") ON DELETE CASCADE ON UPDATE CASCADE;
