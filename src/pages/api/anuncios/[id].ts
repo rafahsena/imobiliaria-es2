@@ -6,6 +6,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "GET") {
     try {
       const anuncio = await getAnuncio(Number(id));
+      if (!anuncio) throw new Error('error')
+
       res.status(200).json(anuncio);
     } catch (e) {
       res.status(404).json({ error: "Could't find the announcement" });
