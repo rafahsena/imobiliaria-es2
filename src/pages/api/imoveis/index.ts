@@ -12,6 +12,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       const imoveis = await listarImoveis();
       res.status(200).json(imoveis);
     } catch (e) {
+      console.log({e})
       res.status(400).json({ error: e });
     }
   }
