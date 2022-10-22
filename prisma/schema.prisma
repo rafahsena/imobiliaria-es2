@@ -24,16 +24,18 @@ model Endereco {
 }
 
 model Imovel {
-  id         Int        @id @default(autoincrement())
-  disponivel Boolean
-  area       Float
-  iptu       Decimal    @db.Money
-  endereco   Endereco   @relation(fields: [enderecoId], references: [id])
-  enderecoId Int
-  anuncio    Anuncio[]
-  contrato   Contrato[]
-  tipo       Tipo?      @relation(fields: [tipoId], references: [id])
-  tipoId     Int?
+  id            Int         @id @default(autoincrement())
+  disponivel    Boolean
+  area          Float
+  iptu          Decimal     @db.Money
+  endereco      Endereco    @relation(fields: [enderecoId], references: [id])
+  enderecoId    Int
+  anuncio       Anuncio[]
+  contrato      Contrato[]
+  tipo          Tipo?       @relation(fields: [tipoId], references: [id])
+  tipoId        Int?
+  funcionario   Funcionario @relation(fields: [funcionarioId], references: [id])
+  funcionarioId Int
 }
 
 model Tipo {
@@ -95,8 +97,9 @@ model Cliente {
 }
 
 model Funcionario {
-  id       Int    @id @default(autoincrement())
+  id       Int      @id @default(autoincrement())
   nome     String
-  email    String @unique
+  email    String   @unique
   password String
+  imovel   Imovel[]
 }
