@@ -20,6 +20,7 @@ CREATE TABLE "Imovel" (
     "iptu" MONEY NOT NULL,
     "enderecoId" INTEGER NOT NULL,
     "tipoId" INTEGER,
+    "funcionarioId" INTEGER NOT NULL,
 
     CONSTRAINT "Imovel_pkey" PRIMARY KEY ("id")
 );
@@ -111,6 +112,9 @@ ALTER TABLE "Imovel" ADD CONSTRAINT "Imovel_enderecoId_fkey" FOREIGN KEY ("ender
 
 -- AddForeignKey
 ALTER TABLE "Imovel" ADD CONSTRAINT "Imovel_tipoId_fkey" FOREIGN KEY ("tipoId") REFERENCES "Tipo"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Imovel" ADD CONSTRAINT "Imovel_funcionarioId_fkey" FOREIGN KEY ("funcionarioId") REFERENCES "Funcionario"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Anuncio" ADD CONSTRAINT "Anuncio_imovelId_fkey" FOREIGN KEY ("imovelId") REFERENCES "Imovel"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
