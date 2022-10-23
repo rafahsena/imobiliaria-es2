@@ -18,7 +18,7 @@ const PropertyDetails: React.FC<PropertyDetailsProps> = ({ imovel, id }) => {
   };
 
   const redirectToEditPropertyPage = () => {
-    router.push(`/criar-imovel/${id}`);
+    router.push(`/detalhes-imovel/${id}/alterar-imovel`);
   };
 
   return (
