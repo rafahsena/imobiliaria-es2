@@ -33,3 +33,10 @@ export interface Funcionario {
   email: String;
   password: String;
 }
+
+export interface Interessado {
+  id: number;
+  nome: string;
+  telefone: string;
+  email: string;
+}
