@@ -1,5 +1,6 @@
 import { NextApiResponse, NextApiRequest } from "next";
 import { cadastrarEndereco } from "src/backend/enderecos/ctrEndereco";
+import conversions from "src/utils/conversions";
 
 import {
   listarImoveis,
@@ -12,7 +13,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       const imoveis = await listarImoveis();
       res.status(200).json(imoveis);
     } catch (e) {
-      console.log({e})
       res.status(400).json({ error: e });
     }
   }
