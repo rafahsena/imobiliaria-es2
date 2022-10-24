@@ -5,13 +5,20 @@ import Card from "@mui/material/Card";
 import Box from "@mui/material/Box";
 import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
+import { Funcionario } from "src/models";
 
 // import { Container } from './styles';
 
-const FormularioFuncionario: React.FC = () => {
-  const [nome, setNome] = useState("");
-  const [email, setEmail] = useState("");
-  const [senha, setSenha] = useState("");
+type FormularioFuncionarioProps = {
+  usuario?: Funcionario;
+};
+
+const FormularioFuncionario: React.FC<FormularioFuncionarioProps> = ({
+  usuario,
+}) => {
+  const [nome, setNome] = useState(usuario?.nome ?? "");
+  const [email, setEmail] = useState(usuario?.email ?? "");
+  const [senha, setSenha] = useState(usuario?.password ?? "");
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
@@ -71,7 +78,7 @@ const FormularioFuncionario: React.FC = () => {
                 }}
               >
                 <Button type="submit" variant="contained" size="large">
-                  Cadastrar funcionário
+                  {usuario ? "Salvar alterações" : "Cadastrar funcionário"}
                 </Button>
               </Box>
             </Grid>

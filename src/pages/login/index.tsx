@@ -50,7 +50,6 @@ const LoginPage = () => {
   const [senha, setSenha] = useState("");
 
   const user = useContext(UserContext);
-  console.log(user);
 
   const handleSubmit = (e) => {
     e.preventDefault();
