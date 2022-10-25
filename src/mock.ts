@@ -1,4 +1,4 @@
-import { Imovel, Anuncio } from "src/models";
+import { Imovel, Anuncio, Interessado } from "src/models";
 const mock = () => {
   const listaDeImoveis: Imovel[] = [
     {
@@ -168,8 +168,29 @@ const mock = () => {
     },
   ];
 
+  const listaDeInteressados: Interessado[] = [
+    {
+      id: 1,
+      nome: "Zezinho",
+      telefone: "(75)99999-9999",
+      email: "zezinho@zezinho.ze"
+    },
+    {
+      id: 2,
+      nome: "Seninha",
+      telefone: "(79)98888-0000",
+      email: "seninha@seninha.se"
+    },
+    {
+      id: 3,
+      nome: "Doguinha",
+      telefone: "(79)91111-3333",
+      email: "doguinha@doguinha.do"
+    },
+  ];
+
   return{
-    listaDeAnuncios, listaDeImoveis
+    listaDeAnuncios, listaDeImoveis, listaDeInteressados
   }
 }
 

@@ -65,6 +65,18 @@ const AdCard = ({
           Preencher Formulário de Interesse
         </Button>
       </Link>
+      <Link href={`/detalhes-anuncio/${imovel?.id}/interessados`}>
+        <Button
+          variant="contained"
+          sx={{
+            py: 2.5,
+            mt: 2,
+            width: "100%",
+          }}
+        >
+          Ver Interessados
+        </Button>
+      </Link>
     </Container>
   );
 };

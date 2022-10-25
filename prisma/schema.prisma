@@ -24,16 +24,18 @@ model Endereco {
 }
 
 model Imovel {
-  id         Int        @id @default(autoincrement())
-  disponivel Boolean
-  area       String
-  iptu       Decimal    @db.Money
-  endereco   Endereco   @relation(fields: [enderecoId], references: [id])
-  enderecoId Int
-  anuncio    Anuncio[]
-  contrato   Contrato[]
-  tipo       Tipo?      @relation(fields: [tipoId], references: [id])
-  tipoId     Int?
+  id            Int         @id @default(autoincrement())
+  disponivel    Boolean
+  area          Float
+  iptu          Decimal     @db.Money
+  endereco      Endereco    @relation(fields: [enderecoId], references: [id])
+  enderecoId    Int
+  anuncio       Anuncio[]
+  contrato      Contrato[]
+  tipo          Tipo?       @relation(fields: [tipoId], references: [id])
+  tipoId        Int?
+  funcionario   Funcionario @relation(fields: [funcionarioId], references: [id])
+  funcionarioId Int
 }
 
 model Tipo {
@@ -43,23 +45,33 @@ model Tipo {
 }
 
 model Anuncio {
-  id            Int           @id @default(autoincrement())
+  id            Int                      @id @default(autoincrement())
   titulo        String
   descricao     String
   dataDeCriacao DateTime
-  valor         Decimal       @db.Money
+  valor         Decimal                  @db.Money
   tipo          String
-  imovel        Imovel?       @relation(fields: [imovelId], references: [id])
-  imovelId      Int           @unique
-  interessado   Interessado[]
+  imovel        Imovel?                  @relation(fields: [imovelId], references: [id])
+  imovelId      Int                      @unique
+  interessado   InteressadosOnAnuncios[]
 }
 
 model Interessado {
-  id       Int       @id @default(autoincrement())
+  id       Int                      @id @default(autoincrement())
   nome     String
   telefone String
   email    String
-  anuncio  Anuncio[]
+  anuncio  InteressadosOnAnuncios[]
+}
+
+model InteressadosOnAnuncios {
+  interessado   Interessado @relation(fields: [interessadoId], references: [id])
+  interessadoId Int
+  anuncio       Anuncio     @relation(fields: [anuncioId], references: [id])
+  anuncioId     Int
+  assignedAt    DateTime    @default(now())
+
+  @@id([interessadoId, anuncioId])
 }
 
 model Contrato {
@@ -85,8 +97,9 @@ model Cliente {
 }
 
 model Funcionario {
-  id    Int     @id @default(autoincrement())
-  nome  String
-  email String
-  admin Boolean
+  id       Int      @id @default(autoincrement())
+  nome     String
+  email    String   @unique
+  password String
+  imovel   Imovel[]
 }

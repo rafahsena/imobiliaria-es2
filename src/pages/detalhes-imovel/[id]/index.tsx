@@ -1,5 +1,5 @@
 //@ts-ignore
-import { GetServerSideProps } from "next";
+import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import { useRouter } from "next/router";
 import mock from "src/mock";
 import { Imovel } from "src/models";
@@ -14,11 +14,11 @@ const PropertyDetails: React.FC<PropertyDetailsProps> = ({ imovel, id }) => {
   const router = useRouter();
 
   const redirectToCreateAdPage = () => {
-    router.push(`/criar-anuncio/${id}`);
+    router.push(`/detalhes-imovel/${id}/criar-anuncio`);
   };
 
   const redirectToEditPropertyPage = () => {
-    router.push(`/criar-imovel/${id}`);
+    router.push(`/detalhes-imovel/${id}/alterar-imovel`);
   };
 
   return (
@@ -30,10 +30,12 @@ const PropertyDetails: React.FC<PropertyDetailsProps> = ({ imovel, id }) => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = (context) => {
+export const getServerSideProps = (
+  context: GetServerSidePropsContext
+): { props: PropertyDetailsProps } => {
   const { params } = context;
 
-  const id = Number(params.id);
+  const id = Number(params?.id);
 
   const { listaDeImoveis } = mock();
   return {

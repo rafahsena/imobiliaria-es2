@@ -26,3 +26,17 @@ export interface Anuncio {
   tipo: string;
   imovel: Imovel | undefined;
 }
+
+export interface Funcionario {
+  id: Number;
+  nome: String;
+  email: String;
+  password: String;
+}
+
+export interface Interessado {
+  id: number;
+  nome: string;
+  telefone: string;
+  email: string;
+}
