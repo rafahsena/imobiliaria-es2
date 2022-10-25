@@ -54,6 +54,7 @@
     "@prisma/client": "4.3.1",
     "apexcharts-clevision": "3.28.5",
     "axios": "^0.27.2",
+    "bcryptjs": "^2.4.3",
     "clsx": "^1.1.1",
     "mdi-material-ui": "^7.1.0",
     "next": "12.0.4",
