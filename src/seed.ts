@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client'
 import { add } from 'date-fns'
-import { bcrypt } from 'bcryptjs'
+const bcrypt = require('bcryptjs')
 
 const prisma = new PrismaClient()
 
@@ -14,6 +14,7 @@ async function main() {
     await prisma.endereco.deleteMany({})
     await prisma.contrato.deleteMany({})
     await prisma.interessado.deleteMany({})
+    await prisma.interessadosOnAnuncios.deleteMany({})
 
     // insert records
     const funcionario = await prisma.funcionario.create({
