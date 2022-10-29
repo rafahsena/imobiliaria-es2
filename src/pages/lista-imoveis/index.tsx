@@ -26,7 +26,11 @@ const ListaDeImoveis = () => {
 
   return (
     <Box>
-      <Button onClick={onCreateClick} variant="outlined">
+      <Button
+        sx={{ marginBottom: 4 }}
+        onClick={onCreateClick}
+        variant="outlined"
+      >
         Cadastrar Imóvel
       </Button>
       <Grid container spacing="2">

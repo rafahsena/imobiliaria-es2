@@ -6,6 +6,7 @@ export const cadastrarImovel = async (imovel: Imovel) => {
     return await api.post("/imoveis", imovel);
   } catch (e) {
     console.log(e);
+    throw new Error();
   }
 };
 
