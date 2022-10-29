@@ -29,7 +29,7 @@ const navigation = (): VerticalNavItemsType => {
     {
       title: "Login",
       icon: Login,
-      path: "/pages/login",
+      path: "/login",
       openInNewTab: true,
     },
     {
