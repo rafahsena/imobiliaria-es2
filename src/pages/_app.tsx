@@ -33,6 +33,7 @@ import "react-perfect-scrollbar/dist/css/styles.css";
 // ** Global css styles
 import "../../styles/globals.css";
 import UserProvider from "src/@core/context/UserContext";
+import SearchProvider from "src/@core/context/searchContext";
 
 // ** Extend App Props with Emotion
 type ExtendedAppProps = AppProps & {
@@ -74,20 +75,21 @@ const App = (props: ExtendedAppProps) => {
         />
         <meta name="viewport" content="initial-scale=1, width=device-width" />
       </Head>
-
-      <UserProvider>
-        <SettingsProvider>
-          <SettingsConsumer>
-            {({ settings }) => {
-              return (
-                <ThemeComponent settings={settings}>
-                  {getLayout(<Component {...pageProps} />)}
-                </ThemeComponent>
-              );
-            }}
-          </SettingsConsumer>
-        </SettingsProvider>
-      </UserProvider>
+      <SearchProvider>
+        <UserProvider>
+          <SettingsProvider>
+            <SettingsConsumer>
+              {({ settings }) => {
+                return (
+                  <ThemeComponent settings={settings}>
+                    {getLayout(<Component {...pageProps} />)}
+                  </ThemeComponent>
+                );
+              }}
+            </SettingsConsumer>
+          </SettingsProvider>
+        </UserProvider>
+      </SearchProvider>
     </CacheProvider>
   );
 };
