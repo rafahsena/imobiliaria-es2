@@ -3,7 +3,10 @@ import { Imovel, PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 export const listarImoveis = async (funcionarioId?) => {
-  const query = { where: {} };
+  const query = {
+    where: {},
+    include: { endereco: true },
+  };
   if (funcionarioId) query.where = { funcionarioId };
   return await prisma.imovel.findMany(query);
 };
