@@ -14,12 +14,14 @@ type PropertyCardProps = {
   imovel: Imovel;
   onCreateAdClick: MouseEventHandler<HTMLButtonElement>;
   onEditPropertyClick: MouseEventHandler<HTMLButtonElement>;
+  onDeleteClick: MouseEventHandler<HTMLButtonElement>;
 };
 
 const PropertyCard: React.FC<PropertyCardProps> = ({
   imovel,
   onCreateAdClick,
   onEditPropertyClick,
+  onDeleteClick,
 }) => {
   return (
     <Card>
@@ -27,7 +29,9 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
         <Box marginBottom={1}>
           <Typography display="flex" alignItems="center" variant="body2">
             <Home />
-            <Box marginLeft={2}>{`${imovel.tipo} | ${imovel.area} m²`}</Box>
+            <Box
+              marginLeft={2}
+            >{`${imovel.tipo.nome} | ${imovel.area} m²`}</Box>
           </Typography>
         </Box>
         <Box marginBottom={1}>
@@ -62,6 +66,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
         {imovel.disponivel && (
           <Button onClick={onCreateAdClick}>Criar Anúncio</Button>
         )}
+        <Button onClick={onDeleteClick}>Excluir Imóvel</Button>
       </CardActions>
     </Card>
   );
