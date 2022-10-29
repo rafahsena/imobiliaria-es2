@@ -19,7 +19,6 @@ async function resetDB() {
     await prisma.endereco.deleteMany({})
     await prisma.contrato.deleteMany({})
     await prisma.interessado.deleteMany({})
-    await prisma.interessadosOnAnuncios.deleteMany({})
 }
 
 async function populateDB() {
@@ -40,11 +39,29 @@ async function populateDB() {
             numero: '0'
         }
     })
-    const tipo = await prisma.tipo.create({
-        data: {
-            nome: 'Urbano'
-        }
+    const tipos = await prisma.tipo.createMany({
+        data: [
+            {
+                nome: 'apartamento'
+            },
+            {
+                nome: 'casa'
+            },
+            {
+                nome: 'terreno'
+            },
+            {
+                nome: 'comercial'
+            }
+        ]
     })
+
+    const imovelTipo = (await prisma.tipo.findMany({
+        where: {
+            nome: 'casa'
+        }
+    }))[0]
+
     const imovel = await prisma.imovel.create({
         data: {
             disponivel: true,
@@ -52,7 +69,7 @@ async function populateDB() {
             iptu: 200,
             tipo: {
                 connect: {
-                    id: tipo.id
+                    id: imovelTipo?.id
                 }
             },
             endereco: {
@@ -99,6 +116,13 @@ async function populateDB() {
                     numero: '1337'
                 }
             }
+        }
+    })
+    const interessado = await prisma.interessado.create({
+        data: {
+            nome: cliente.nome,
+            telefone: cliente.telefone,
+            email: cliente.email
         }
     })
 }
