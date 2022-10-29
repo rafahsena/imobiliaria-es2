@@ -8,3 +8,21 @@ export const cadastrarImovel = async (imovel: Imovel) => {
     console.log(e);
   }
 };
+
+export const listarImoveis = async (funcionarioId) => {
+  try {
+    const response = await api.get("/imoveis", { params: { funcionarioId } });
+    return response.data;
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+export const getImovel = async (imovelId) => {
+  try {
+    const response = await api.get(`/imoveis/${imovelId}`);
+    return response.data;
+  } catch (e) {
+    console.log(e);
+  }
+};

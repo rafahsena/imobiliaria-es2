@@ -27,7 +27,9 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
         <Box marginBottom={1}>
           <Typography display="flex" alignItems="center" variant="body2">
             <Home />
-            <Box marginLeft={2}>{`${imovel.tipo} | ${imovel.area} m²`}</Box>
+            <Box
+              marginLeft={2}
+            >{`${imovel.tipo.nome} | ${imovel.area} m²`}</Box>
           </Typography>
         </Box>
         <Box marginBottom={1}>

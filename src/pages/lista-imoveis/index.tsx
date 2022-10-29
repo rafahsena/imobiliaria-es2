@@ -1,31 +1,39 @@
-import { Grid } from "@mui/material";
-import mock from "src/mock";
+import { Grid, Box } from "@mui/material";
+import { useContext, useEffect, useState } from "react";
+import { UserContext } from "src/@core/context/UserContext";
+import Loading from "src/layouts/components/Loading";
 import { Imovel } from "src/models";
+import { listarImoveis } from "src/services/imovel";
 import CardImovel from "src/views/cards/CardImovelLista";
 
-type PropsImoveis = {
-  imoveis: Imovel[]
-}
+const ListaDeImoveis = () => {
+  const funcionario = useContext(UserContext);
 
-const ListaDeImoveis = (props: PropsImoveis) => {
-  
+  const [isLoading, setIsLoading] = useState(true);
+
+  const [listaDeImoveis, setListaDeImoveis] = useState([]);
+
+  useEffect(() => {
+    setIsLoading(true);
+    listarImoveis(funcionario.user.id).then((imoveis) => {
+      setListaDeImoveis(imoveis);
+      setIsLoading(false);
+    });
+  }, []);
+
   return (
     <Grid container spacing="2">
-      {props.imoveis.map((imovel: Imovel) => (
-        <Grid item xs={12} sm={6} md={4} key={imovel.id}>
-          <CardImovel {...imovel} />
-        </Grid>
-      ))}
+      {listaDeImoveis.length === 0 && isLoading ? (
+        <Loading />
+      ) : (
+        listaDeImoveis.map((imovel: Imovel) => (
+          <Grid item xs={12} sm={6} md={4} key={imovel.id}>
+            <CardImovel {...imovel} />
+          </Grid>
+        ))
+      )}
     </Grid>
   );
 };
-
-export async function getServerSideProps() {
-  const { listaDeImoveis } = mock();
-
-  return {
-    props: {imoveis: listaDeImoveis}
-  }
-}
 
 export default ListaDeImoveis;

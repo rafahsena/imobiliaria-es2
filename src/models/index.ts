@@ -14,7 +14,12 @@ export interface Imovel {
   area: number;
   iptu: number;
   endereco: Endereco;
-  tipo: string;
+  tipo: Tipo;
+}
+
+export interface Tipo {
+  id: number;
+  nome: string;
 }
 
 export interface Anuncio {

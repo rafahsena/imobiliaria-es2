@@ -5,14 +5,17 @@ const prisma = new PrismaClient();
 export const listarImoveis = async (funcionarioId?) => {
   const query = {
     where: {},
-    include: { endereco: true },
+    include: { endereco: true, tipo: true },
   };
   if (funcionarioId) query.where = { funcionarioId };
   return await prisma.imovel.findMany(query);
 };
 
 export const getImovel = async (id: number) => {
-  return await prisma.imovel.findFirst({ where: { id } });
+  return await prisma.imovel.findFirst({
+    where: { id },
+    include: { endereco: true, tipo: true },
+  });
 };
 
 export const alterarImovel = async (id: number, imovel: Imovel) => {

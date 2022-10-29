@@ -1,6 +1,5 @@
 import { NextApiResponse, NextApiRequest } from "next";
 import { cadastrarEndereco } from "src/backend/enderecos/ctrEndereco";
-import conversions from "src/utils/conversions";
 
 import {
   listarImoveis,
