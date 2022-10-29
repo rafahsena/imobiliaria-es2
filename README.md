@@ -80,6 +80,12 @@ By completing the filling process on the .env file, run the following command to
 $ npx prisma migrate dev
 ```
 
+(Optional) To populate the database run this:
+
+```shell
+$ npm run seed
+```
+
 To visualize the database using prisma studio:
 ```shell 
 $ npx prisma studio 
