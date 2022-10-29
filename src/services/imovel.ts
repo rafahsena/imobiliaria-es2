@@ -1,5 +1,6 @@
 import { api } from "./api";
 import { Imovel } from "../models";
+import { alterarAnuncio } from "src/backend/anuncio/ctrAnuncio";
 
 export const cadastrarImovel = async (imovel: Imovel) => {
   try {
@@ -36,5 +37,15 @@ export const removerImovel = async (imovelId) => {
   } catch (e) {
     console.log(e);
     throw new Error("Couldn't delete property");
+  }
+};
+
+export const alterarImovel = async (id, imovel) => {
+  try {
+    const response = await api.put(`/imoveis/${id}`, imovel);
+    return response.data;
+  } catch (e) {
+    console.log(e);
+    throw new Error();
   }
 };

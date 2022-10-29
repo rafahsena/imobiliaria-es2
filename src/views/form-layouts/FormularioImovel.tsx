@@ -7,13 +7,12 @@ import { useForm, Controller } from "react-hook-form";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import Grid from "@mui/material/Grid";
-import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import CardHeader from "@mui/material/CardHeader";
 import CardContent from "@mui/material/CardContent";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
-import { cadastrarImovel } from "src/services/imovel";
+import { alterarImovel, cadastrarImovel } from "src/services/imovel";
 import {
   Radio,
   FormControl,
@@ -25,9 +24,16 @@ import {
 import { UserContext } from "src/@core/context/UserContext";
 import { LoadingButton } from "@mui/lab";
 import router from "next/router";
+import { Imovel } from "src/models";
 
-const FormularioImovel = () => {
-  const { handleSubmit, control } = useForm();
+type FormularioImovelProps = {
+  imovel?: Imovel;
+};
+
+const FormularioImovel: React.FC<FormularioImovelProps> = ({ imovel }) => {
+  const { handleSubmit, control } = useForm({
+    defaultValues: { ...imovel, disponivel: imovel?.disponivel ? 1 : 0 },
+  });
 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
@@ -57,7 +63,11 @@ const FormularioImovel = () => {
       };
       setError("");
       setIsLoading(true);
-      await cadastrarImovel(imovel);
+      if (imovel.id) {
+        await alterarImovel(imovel.id, imovel);
+      } else {
+        await cadastrarImovel(imovel);
+      }
       setIsLoading(false);
       router.push("/lista-imoveis");
     } catch (err) {
@@ -79,7 +89,6 @@ const FormularioImovel = () => {
               <Controller
                 name="disponivel"
                 control={control}
-                defaultValue={1}
                 render={({ field, fieldState }) => (
                   <Select
                     error={!!fieldState.error}
@@ -329,7 +338,7 @@ const FormularioImovel = () => {
                   variant="contained"
                   size="large"
                 >
-                  Adicionar imóvel
+                  {imovel?.id ? "Salvar Alterações" : "Cadastrar Imóvel"}
                 </LoadingButton>
               </Box>
             </Grid>

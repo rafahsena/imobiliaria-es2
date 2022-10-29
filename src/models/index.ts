@@ -14,7 +14,7 @@ export interface Imovel {
   area: number;
   iptu: number;
   endereco: Endereco;
-  tipo: Tipo;
+  tipoId: number;
 }
 
 export interface Tipo {
