@@ -26,3 +26,13 @@ export const getImovel = async (imovelId) => {
     console.log(e);
   }
 };
+
+export const removerImovel = async (imovelId) => {
+  try {
+    const response = await api.delete(`/imoveis/${imovelId}`);
+    return response.data;
+  } catch (e) {
+    console.log(e);
+    throw new Error("Couldn't delete property");
+  }
+};
