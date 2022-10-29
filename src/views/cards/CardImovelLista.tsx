@@ -21,10 +21,7 @@ const CardImovelLista = (imovel: Imovel) => {
           {imovel.endereco.estado.slice(0, 2).toUpperCase()},{" "}
           {imovel.endereco.pais}
         </Typography>
-        <Typography sx={{ marginBottom: 2 }}>
-          {imovel.tipo}
-        </Typography>
-
+        <Typography sx={{ marginBottom: 2 }}>{imovel.tipo.nome}</Typography>
       </CardContent>
       <Button
         variant="contained"
