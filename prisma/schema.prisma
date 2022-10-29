@@ -34,7 +34,7 @@ model Imovel {
   contrato      Contrato[]
   tipo          Tipo?       @relation(fields: [tipoId], references: [id])
   tipoId        Int?
-  funcionario   Funcionario @relation(fields: [funcionarioId], references: [id])
+  funcionario   Funcionario @relation(fields: [funcionarioId], references: [id], onDelete: Cascade)
   funcionarioId Int
 }
 
@@ -51,7 +51,7 @@ model Anuncio {
   dataDeCriacao DateTime
   valor         Decimal                  @db.Money
   tipo          String
-  imovel        Imovel?                  @relation(fields: [imovelId], references: [id])
+  imovel        Imovel?                  @relation(fields: [imovelId], references: [id], onDelete: Cascade)
   imovelId      Int                      @unique
   interessado   InteressadosOnAnuncios[]
 }
@@ -67,7 +67,7 @@ model Interessado {
 model InteressadosOnAnuncios {
   interessado   Interessado @relation(fields: [interessadoId], references: [id])
   interessadoId Int
-  anuncio       Anuncio     @relation(fields: [anuncioId], references: [id])
+  anuncio       Anuncio     @relation(fields: [anuncioId], references: [id], onDelete: Cascade)
   anuncioId     Int
   assignedAt    DateTime    @default(now())
 
@@ -80,7 +80,7 @@ model Contrato {
   vencimento     DateTime
   tipo           String   @db.Char(2)
   dataAssinatura DateTime
-  imovel         Imovel?  @relation(fields: [imovelId], references: [id])
+  imovel         Imovel?  @relation(fields: [imovelId], references: [id], onDelete: Cascade)
   imovelId       Int?
 }
 

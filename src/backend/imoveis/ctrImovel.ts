@@ -36,3 +36,7 @@ export const cadastrarImovel = async (imovel: Imovel) => {
     data: imovel,
   });
 };
+
+export const removerImovel = async (id: number) => {
+  return await prisma.imovel.delete({ where: { id } });
+};
