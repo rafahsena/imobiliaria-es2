@@ -15,6 +15,7 @@ type PropertyCardProps = {
   onCreateAdClick: MouseEventHandler<HTMLButtonElement>;
   onEditPropertyClick: MouseEventHandler<HTMLButtonElement>;
   onDeleteClick: MouseEventHandler<HTMLButtonElement>;
+  onEmitContrat: MouseEventHandler<HTMLButtonElement>;
 };
 
 const PropertyCard: React.FC<PropertyCardProps> = ({
@@ -22,6 +23,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
   onCreateAdClick,
   onEditPropertyClick,
   onDeleteClick,
+  onEmitContrat,
 }) => {
   return (
     <Card>
@@ -66,7 +68,10 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
         {imovel.disponivel && (
           <Button onClick={onCreateAdClick}>Criar Anúncio</Button>
         )}
-        <Button onClick={onDeleteClick}>Excluir Imóvel</Button>
+        <Button onClick={onEmitContrat}>Emitir Contrato</Button>
+        <Button color="error" onClick={onDeleteClick}>
+          Excluir Imóvel
+        </Button>
       </CardActions>
     </Card>
   );

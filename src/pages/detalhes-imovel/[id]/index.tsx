@@ -40,6 +40,10 @@ const PropertyDetails: React.FC<PropertyDetailsProps> = ({ imovel, id }) => {
     }
   };
 
+  const emitContrat = () => {
+    router.push(`/detalhes-imovel/${id}/emitir-contrato`);
+  };
+
   return isLoading ? (
     <Loading />
   ) : (
@@ -53,6 +57,7 @@ const PropertyDetails: React.FC<PropertyDetailsProps> = ({ imovel, id }) => {
         onDeleteClick={deleteProperty}
         onCreateAdClick={redirectToCreateAdPage}
         onEditPropertyClick={redirectToEditPropertyPage}
+        onEmitContrat={emitContrat}
         imovel={imovel}
       />
     </>
