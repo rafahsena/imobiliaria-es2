@@ -22,13 +22,13 @@ type ModalProps = {
   closeModal: () => void;
 };
 
-const ModalRemoverImovel = ({ visible, closeModal }: ModalProps) => {
+const ModalRemoverFuncionario = ({ visible, closeModal }: ModalProps) => {
   return (
     <>
       <Modal open={visible} onClose={closeModal}>
         <Box sx={style}>
           <Typography id="modal-modal-title" variant="h6" component="h2">
-            Tem certeza que deseja remover o imóvel?
+            Tem certeza que deseja remover o funcionário?
           </Typography>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
             Essa decisão não pode ser revertida.
@@ -36,7 +36,7 @@ const ModalRemoverImovel = ({ visible, closeModal }: ModalProps) => {
 
           <CardActions sx={{ justifyContent: "space-around" }}>
             <Button onClick={closeModal}>Cancelar</Button>
-            <Button color="error">Remover Imóvel</Button>
+            <Button color="error">Remover Funcionário</Button>
           </CardActions>
         </Box>
       </Modal>
@@ -44,4 +44,4 @@ const ModalRemoverImovel = ({ visible, closeModal }: ModalProps) => {
   );
 };
 
-export default ModalRemoverImovel;
+export default ModalRemoverFuncionario;

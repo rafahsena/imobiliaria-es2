@@ -7,7 +7,6 @@ import Loading from "src/layouts/components/Loading";
 import { Imovel } from "src/models";
 import { getImovel, removerImovel } from "src/services/imovel";
 import PropertyCard from "src/views/cards/PropertyCard";
-import ModalRemoverImovel from "src/views/utils/ModalRemoverImovel";
 
 type PropertyDetailsProps = {
   imovel: Imovel;

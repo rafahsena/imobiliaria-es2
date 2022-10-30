@@ -14,6 +14,7 @@ import Button from "@mui/material/Button";
 import EyeOutline from "mdi-material-ui/EyeOutline";
 import EyeOffOutline from "mdi-material-ui/EyeOffOutline";
 import { OutlinedInput, InputAdornment } from "@mui/material";
+import ModalRemoverFuncionario from "../utils/ModalRemoverFuncionario";
 
 interface State {
   newPassword: string;
@@ -34,6 +35,8 @@ const TabAccount = () => {
     showCurrentPassword: false,
     showConfirmNewPassword: false,
   });
+
+  const [modalVisible, setModalVisible] = useState(false);
 
   // Handle Current Password
   const handleCurrentPasswordChange =
@@ -173,8 +176,20 @@ const TabAccount = () => {
           <Button variant="contained" sx={{ marginRight: 3.5 }}>
             Salvar alterações
           </Button>
+          <Button
+            color="error"
+            sx={{ marginRight: 3.5 }}
+            onClick={() => setModalVisible(true)}
+          >
+            Remover funcionário
+          </Button>
         </Grid>
       </form>
+
+      <ModalRemoverFuncionario
+        visible={modalVisible}
+        closeModal={() => setModalVisible(false)}
+      />
     </CardContent>
   );
 };
