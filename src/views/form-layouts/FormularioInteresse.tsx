@@ -6,10 +6,15 @@ import CardHeader from "@mui/material/CardHeader";
 import Box from "@mui/material/Box";
 import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
+import { demonstrarInteresse } from "src/services/interessados";
 
 // import { Container } from './styles';
 
-const FormularioInteresse: React.FC = () => {
+type FormularioInteresseProps = {
+  anuncioId: number
+}
+
+const FormularioInteresse = ({anuncioId}: FormularioInteresseProps) => {
   const [nome, setNome] = useState("");
   const [telefone, setTelefone] = useState("");
   const [email, setEmail] = useState("");
@@ -24,7 +29,7 @@ const FormularioInteresse: React.FC = () => {
         email,
       };
 
-      console.log(interesse);
+      await demonstrarInteresse(anuncioId, { id:0 , ...interesse })
     } catch (e) {}
   };
 

@@ -8,6 +8,7 @@ import AccountCogOutline from "mdi-material-ui/AccountCogOutline";
 import CreditCardOutline from "mdi-material-ui/CreditCardOutline";
 import AccountPlusOutline from "mdi-material-ui/AccountPlusOutline";
 import AlertCircleOutline from "mdi-material-ui/AlertCircleOutline";
+import AccountOutline from "mdi-material-ui/AccountOutline";
 import GoogleCirclesExtended from "mdi-material-ui/GoogleCirclesExtended";
 
 // ** Type import
@@ -21,9 +22,14 @@ const navigation = (): VerticalNavItemsType => {
       path: "/lista-imoveis",
     },
     {
+      title: "Funcionários",
+      icon: AccountOutline,
+      path: "/funcionarios",
+    },
+    {
       title: "Login",
       icon: Login,
-      path: "/pages/login",
+      path: "/login",
       openInNewTab: true,
     },
     {

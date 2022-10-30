@@ -7,6 +7,7 @@ import Loading from "src/layouts/components/Loading";
 import { Imovel } from "src/models";
 import { getImovel, removerImovel } from "src/services/imovel";
 import PropertyCard from "src/views/cards/PropertyCard";
+import ModalRemoverImovel from "src/views/utils/ModalRemoverImovel";
 
 type PropertyDetailsProps = {
   imovel: Imovel;
@@ -18,6 +19,7 @@ const PropertyDetails: React.FC<PropertyDetailsProps> = ({ imovel, id }) => {
   const [error, setError] = useState("");
 
   const router = useRouter();
+  const [openModal, setOpenModal] = useState(false);
 
   const redirectToCreateAdPage = () => {
     router.push(`/detalhes-imovel/${id}/criar-anuncio`);

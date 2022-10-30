@@ -1,61 +1,84 @@
 // ** React Imports
-import { ChangeEvent, MouseEvent, useState, SyntheticEvent } from "react";
+import { useContext, useState } from "react";
+
+import { useForm, Controller } from "react-hook-form";
 
 // ** MUI Imports
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import Grid from "@mui/material/Grid";
-import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import CardHeader from "@mui/material/CardHeader";
 import CardContent from "@mui/material/CardContent";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
+import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
-import { cadastrarEndereco } from "src/services/endereco";
-import { cadastrarImovel } from "src/services/imovel";
+import { alterarImovel, cadastrarImovel } from "src/services/imovel";
+import {
+  Radio,
+  FormControl,
+  FormLabel,
+  RadioGroup,
+  FormControlLabel,
+  Alert,
+} from "@mui/material";
+import { UserContext } from "src/@core/context/UserContext";
+import { LoadingButton } from "@mui/lab";
+import router from "next/router";
+import { Imovel } from "src/models";
 
-const FormularioImovel = () => {
-  const [disponivel, setDisponivel] = useState(1);
-  const [tipoImovel, setTipoImovel] = useState("");
-  const [area, setArea] = useState(0);
-  const [iptu, setIptu] = useState(0);
+type FormularioImovelProps = {
+  imovel?: Imovel;
+};
 
-  const [logradouro, setLogradouro] = useState("");
-  const [cidade, setCidade] = useState("");
-  const [estado, setEstado] = useState("");
-  const [cep, setCep] = useState("");
-  const [pais, setPais] = useState("");
-  const [complemento, setComplemento] = useState("");
-  const [numero, setNumero] = useState("");
+const FormularioImovel: React.FC<FormularioImovelProps> = ({ imovel }) => {
+  const { handleSubmit, control } = useForm({
+    defaultValues: { ...imovel, disponivel: imovel?.disponivel ? 1 : 0 },
+  });
 
-  const handleSubmit = async (e: any) => {
-    e.preventDefault();
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
+  const funcionario = useContext(UserContext);
 
+  const tiposEnum = [
+    {
+      value: 1,
+      label: "Casa",
+    },
+    {
+      value: 2,
+      label: "Terreno",
+    },
+    {
+      value: 3,
+      label: "Apartamento",
+    },
+  ];
+
+  const onSubmit = async (data: any) => {
     try {
       const imovel = {
-        disponivel: !!disponivel,
-        area,
-        iptu,
-        tipo: tipoImovel,
+        ...data,
+        funcionarioId: funcionario.user.id,
+        disponivel: Boolean(data.disponivel),
       };
-
-      const endereco = {
-        logradouro,
-        cidade,
-        estado,
-        cep,
-        pais,
-        complemento,
-        numero,
-      };
-
-      await cadastrarImovel({ ...imovel, endereco });
-    } catch (err) {}
+      setError("");
+      setIsLoading(true);
+      if (imovel.id) {
+        await alterarImovel(imovel.id, imovel);
+      } else {
+        await cadastrarImovel(imovel);
+      }
+      setIsLoading(false);
+      router.push("/lista-imoveis");
+    } catch (err) {
+      setIsLoading(false);
+      setError("Não foi possível cadastrar o imóvel");
+    }
   };
 
   return (
     <Card>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <CardContent>
           <CardHeader
             title="Sobre o imóvel"
@@ -63,41 +86,92 @@ const FormularioImovel = () => {
           />
           <Grid container spacing={5}>
             <Grid item xs={12}>
-              <Select
-                autoWidth
-                value={disponivel}
-                onChange={(value) =>
-                  setDisponivel(value.target.value as number)
-                }
-              >
-                <MenuItem value={1}>Disponível</MenuItem>
-                <MenuItem value={0}>Indisponível</MenuItem>
-              </Select>
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                fullWidth
-                label="Tipo do imóvel"
-                value={tipoImovel}
-                onChange={(value) => setTipoImovel(value.target.value)}
+              <Controller
+                name="disponivel"
+                control={control}
+                render={({ field, fieldState }) => (
+                  <Select
+                    error={!!fieldState.error}
+                    autoWidth
+                    {...field}
+                    onChange={(e) => field.onChange(e.target.value)}
+                  >
+                    <MenuItem value={1}>Disponível</MenuItem>
+                    <MenuItem value={0}>Indisponível</MenuItem>
+                  </Select>
+                )}
               />
             </Grid>
             <Grid item xs={12}>
-              <TextField
-                fullWidth
-                type="number"
-                label="Área (m²)"
-                value={area}
-                onChange={(value) => setArea(Number(value.target.value))}
+              <FormControl>
+                <FormLabel>Tipo de Imóvel</FormLabel>
+                <Controller
+                  name="tipoId"
+                  control={control}
+                  defaultValue={1}
+                  render={({ field }) => (
+                    <RadioGroup
+                      aria-labelledby="radio-buttons-group-label"
+                      {...field}
+                      onChange={(e) => field.onChange(Number(e.target.value))}
+                    >
+                      {tiposEnum.map((tipo) => (
+                        <FormControlLabel
+                          key={tipo.value}
+                          control={<Radio />}
+                          value={tipo.value}
+                          label={tipo.label}
+                        />
+                      ))}
+                    </RadioGroup>
+                  )}
+                />
+              </FormControl>
+            </Grid>
+            <Grid item xs={12}>
+              <Controller
+                name="area"
+                control={control}
+                defaultValue={0}
+                rules={{ required: true, min: 1 }}
+                render={({ field, fieldState }) => {
+                  return (
+                    <TextField
+                      {...field}
+                      error={!!fieldState.error}
+                      helperText={
+                        !!fieldState.error &&
+                        "Campo inválido. Por favor, tente novamente."
+                      }
+                      fullWidth
+                      type="number"
+                      label="Área (m²)"
+                      onChange={(e) => field.onChange(Number(e.target.value))}
+                    />
+                  );
+                }}
               />
             </Grid>
             <Grid item xs={12}>
-              <TextField
-                fullWidth
-                type="number"
-                label="IPTU (R$)"
-                value={iptu}
-                onChange={(value) => setIptu(Number(value.target.value))}
+              <Controller
+                name="iptu"
+                control={control}
+                defaultValue={0}
+                rules={{ required: true, min: 1 }}
+                render={({ field, fieldState }) => (
+                  <TextField
+                    error={!!fieldState.error}
+                    helperText={
+                      !!fieldState.error &&
+                      "Campo inválido. Por favor, tente novamente."
+                    }
+                    {...field}
+                    fullWidth
+                    type="number"
+                    label="IPTU (R$)"
+                    onChange={(e) => field.onChange(Number(e.target.value))}
+                  />
+                )}
               />
             </Grid>
           </Grid>
@@ -111,61 +185,142 @@ const FormularioImovel = () => {
 
           <Grid container spacing={5}>
             <Grid item xs={12}>
-              <TextField
-                fullWidth
-                label="Logradouro"
-                value={logradouro}
-                onChange={(value) => setLogradouro(value.target.value)}
+              <Controller
+                name="endereco.logradouro"
+                control={control}
+                rules={{ required: true }}
+                render={({ field, fieldState }) => (
+                  <TextField
+                    error={!!fieldState.error}
+                    helperText={
+                      !!fieldState.error &&
+                      "Campo inválido. Por favor, tente novamente."
+                    }
+                    {...field}
+                    fullWidth
+                    label="Logradouro"
+                  />
+                )}
               />
             </Grid>
             <Grid item xs={12}>
-              <TextField
-                fullWidth
-                label="Número"
-                value={numero}
-                onChange={(value) => setNumero(value.target.value)}
+              <Controller
+                name="endereco.numero"
+                control={control}
+                rules={{ required: true }}
+                render={({ field, fieldState }) => (
+                  <TextField
+                    error={!!fieldState.error}
+                    helperText={
+                      !!fieldState.error &&
+                      "Campo inválido. Por favor, tente novamente."
+                    }
+                    {...field}
+                    fullWidth
+                    label="Número"
+                  />
+                )}
               />
             </Grid>
             <Grid item xs={12}>
-              <TextField
-                fullWidth
-                label="Complemento"
-                value={complemento}
-                onChange={(value) => setComplemento(value.target.value)}
+              <Controller
+                name="endereco.complemento"
+                control={control}
+                render={({ field, fieldState }) => (
+                  <TextField
+                    error={!!fieldState.error}
+                    helperText={
+                      !!fieldState.error &&
+                      "Campo inválido. Por favor, tente novamente."
+                    }
+                    {...field}
+                    fullWidth
+                    label="Complemento (opcional)"
+                  />
+                )}
               />
             </Grid>
             <Grid item xs={12}>
-              <TextField
-                fullWidth
-                label="CEP"
-                value={cep}
-                onChange={(value) => setCep(value.target.value)}
+              <Controller
+                name="endereco.cep"
+                control={control}
+                rules={{ required: true }}
+                render={({ field, fieldState }) => (
+                  <TextField
+                    error={!!fieldState.error}
+                    helperText={
+                      !!fieldState.error &&
+                      "Campo inválido. Por favor, tente novamente."
+                    }
+                    {...field}
+                    fullWidth
+                    label="CEP"
+                  />
+                )}
               />
             </Grid>
             <Grid item xs={12}>
-              <TextField
-                fullWidth
-                label="Cidade"
-                value={cidade}
-                onChange={(value) => setCidade(value.target.value)}
+              <Controller
+                name="endereco.cidade"
+                control={control}
+                rules={{ required: true }}
+                render={({ field, fieldState }) => (
+                  <TextField
+                    error={!!fieldState.error}
+                    helperText={
+                      !!fieldState.error &&
+                      "Campo inválido. Por favor, tente novamente."
+                    }
+                    {...field}
+                    fullWidth
+                    label="Cidade"
+                  />
+                )}
               />
             </Grid>
             <Grid item xs={12}>
-              <TextField
-                fullWidth
-                label="Estado"
-                value={estado}
-                onChange={(value) => setEstado(value.target.value)}
+              <Controller
+                name="endereco.estado"
+                control={control}
+                rules={{ required: true }}
+                render={({ field, fieldState }) => (
+                  <TextField
+                    error={!!fieldState.error}
+                    helperText={
+                      !!fieldState.error &&
+                      "Campo inválido. Por favor, tente novamente."
+                    }
+                    {...field}
+                    fullWidth
+                    label="Estado"
+                  />
+                )}
               />
             </Grid>
             <Grid item xs={12}>
-              <TextField
-                fullWidth
-                label="País"
-                value={pais}
-                onChange={(value) => setPais(value.target.value)}
+              <Controller
+                name="endereco.pais"
+                control={control}
+                rules={{ required: true }}
+                render={({ field, fieldState }) => (
+                  <TextField
+                    error={!!fieldState.error}
+                    helperText={
+                      !!fieldState.error &&
+                      "Campo inválido. Por favor, tente novamente."
+                    }
+                    {...field}
+                    fullWidth
+                    label="País"
+                  />
+                )}
               />
             </Grid>
+            {error && (
+              <Alert severity="error" sx={{ marginTop: 4, marginLeft: 4 }}>
+                {error}
+              </Alert>
+            )}
 
             <Grid item xs={12}>
               <Box
@@ -177,9 +332,14 @@ const FormularioImovel = () => {
                   justifyContent: "space-between",
                 }}
               >
-                <Button type="submit" variant="contained" size="large">
-                  Adicionar imóvel
-                </Button>
+                <LoadingButton
+                  loading={isLoading}
+                  type="submit"
+                  variant="contained"
+                  size="large"
+                >
+                  {imovel?.id ? "Salvar Alterações" : "Cadastrar Imóvel"}
+                </LoadingButton>
               </Box>
             </Grid>
           </Grid>
