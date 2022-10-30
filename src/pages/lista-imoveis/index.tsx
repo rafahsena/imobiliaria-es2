@@ -1,7 +1,6 @@
 import { Grid, Box, Button, Typography } from "@mui/material";
 import router from "next/router";
-import { useContext, useEffect, useState } from "react";
-import { UserContext } from "src/@core/context/UserContext";
+import { useEffect, useState } from "react";
 import Loading from "src/layouts/components/Loading";
 import { Imovel } from "src/models";
 import { listarImoveis } from "src/services/imovel";
