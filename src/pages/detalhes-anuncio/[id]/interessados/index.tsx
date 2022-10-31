@@ -35,7 +35,7 @@ const ListaDeInteressados = ({anuncioId}: ListaDeInteressadosProps) => {
         </Grid>
       ))}
       {isLoading && <Loading />}
-      {interessados?.length <= 0 && 
+      {!isLoading && interessados?.length <= 0 && 
         <div style={{ justifyContent: 'center', display: 'flex', alignItems: 'center', width: '100%' }}>
           <Typography >
             Não existem interessados nesse anúncio
