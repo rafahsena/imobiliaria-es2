@@ -1,5 +1,7 @@
 // ** React Imports
-import { useState, ElementType, ChangeEvent, MouseEvent } from "react";
+import { useState, MouseEvent } from "react";
+
+import { useForm, Controller } from "react-hook-form";
 
 // ** MUI Imports
 import Grid from "@mui/material/Grid";
@@ -13,170 +15,180 @@ import Button from "@mui/material/Button";
 // ** Icons Imports
 import EyeOutline from "mdi-material-ui/EyeOutline";
 import EyeOffOutline from "mdi-material-ui/EyeOffOutline";
-import { OutlinedInput, InputAdornment } from "@mui/material";
+import {
+  OutlinedInput,
+  InputAdornment,
+  Switch,
+  FormControlLabel,
+  Alert,
+} from "@mui/material";
 import ModalRemoverFuncionario from "../utils/ModalRemoverFuncionario";
+import {
+  alterarFuncionario,
+  removerFuncionario,
+} from "src/services/funcionarios";
+import router from "next/router";
+import { LoadingButton } from "@mui/lab";
 
-interface State {
-  newPassword: string;
-  currentPassword: string;
-  showNewPassword: boolean;
-  confirmNewPassword: string;
-  showCurrentPassword: boolean;
-  showConfirmNewPassword: boolean;
-}
-
-const TabAccount = () => {
-  // ** State
-  const [values, setValues] = useState<State>({
-    newPassword: "",
-    currentPassword: "",
-    showNewPassword: false,
-    confirmNewPassword: "",
-    showCurrentPassword: false,
-    showConfirmNewPassword: false,
-  });
+const TabAccount = ({ funcionario }) => {
+  const { handleSubmit, control } = useForm({ defaultValues: funcionario });
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showPasswordField, setShowPasswordField] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const [modalVisible, setModalVisible] = useState(false);
 
-  // Handle Current Password
-  const handleCurrentPasswordChange =
-    (prop: keyof State) => (event: ChangeEvent<HTMLInputElement>) => {
-      setValues({ ...values, [prop]: event.target.value });
-    };
-  const handleClickShowCurrentPassword = () => {
-    setValues({ ...values, showCurrentPassword: !values.showCurrentPassword });
-  };
-  const handleMouseDownCurrentPassword = (
-    event: MouseEvent<HTMLButtonElement>
-  ) => {
-    event.preventDefault();
+  const handleClickShowNewPassword = () => {
+    setShowNewPassword((showNewPassword) => !showNewPassword);
   };
 
-  // Handle New Password
-  const handleNewPasswordChange =
-    (prop: keyof State) => (event: ChangeEvent<HTMLInputElement>) => {
-      setValues({ ...values, [prop]: event.target.value });
-    };
-  const handleClickShowNewPassword = () => {
-    setValues({ ...values, showNewPassword: !values.showNewPassword });
-  };
   const handleMouseDownNewPassword = (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
   };
 
-  // Handle Confirm New Password
-  const handleConfirmNewPasswordChange =
-    (prop: keyof State) => (event: ChangeEvent<HTMLInputElement>) => {
-      setValues({ ...values, [prop]: event.target.value });
-    };
-  const handleClickShowConfirmNewPassword = () => {
-    setValues({
-      ...values,
-      showConfirmNewPassword: !values.showConfirmNewPassword,
-    });
+  const deleteEmployee = async () => {
+    try {
+      const { id } = funcionario;
+      await removerFuncionario(id);
+      router.push("/funcionarios");
+    } catch (e) {
+      console.log(e);
+    }
   };
-  const handleMouseDownConfirmNewPassword = (
-    event: MouseEvent<HTMLButtonElement>
-  ) => {
-    event.preventDefault();
+
+  const onSubmit = async (data) => {
+    const funcionario = {
+      ...data,
+      password: showPasswordField ? data.password : undefined,
+    };
+
+    try {
+      setError("");
+      setIsLoading(true);
+      await alterarFuncionario(funcionario.id, funcionario);
+      setIsLoading(false);
+      router.push("/funcionarios");
+    } catch (e) {
+      setIsLoading(false);
+      setError("Não foi possível alterar os dados do cadastro");
+    } finally {
+    }
   };
 
   return (
     <CardContent>
-      <form>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <Grid container spacing={7}>
           <Grid item xs={12} sm={6}>
-            <TextField
-              fullWidth
-              label="Name"
-              placeholder="John Doe"
-              defaultValue="John Doe"
+            <Controller
+              name="nome"
+              control={control}
+              rules={{ required: true }}
+              render={({ field, fieldState }) => (
+                <TextField
+                  fullWidth
+                  label="Nome"
+                  placeholder="Nome da pessoa"
+                  error={!!fieldState.error}
+                  helperText={!!fieldState.error && "Campo Obrigatório"}
+                  {...field}
+                />
+              )}
             />
           </Grid>
           <Grid item xs={12} sm={6}>
-            <TextField
-              fullWidth
-              type="email"
-              label="Email"
-              placeholder="johnDoe@example.com"
-              defaultValue="johnDoe@example.com"
+            <Controller
+              name="email"
+              control={control}
+              rules={{ required: true }}
+              render={({ field, fieldState }) => (
+                <TextField
+                  fullWidth
+                  type="email"
+                  label="Email"
+                  placeholder="pessoa@email.com"
+                  error={!!fieldState.error}
+                  helperText={!!fieldState.error && "Campo Obrigatório"}
+                  {...field}
+                />
+              )}
             />
           </Grid>
         </Grid>
+        <FormControlLabel
+          sx={{ marginTop: 4 }}
+          label="Mudar senha?"
+          control={
+            <Switch
+              value={showPasswordField}
+              onChange={(e) => setShowPasswordField(e.target.checked)}
+            />
+          }
+        />
 
-        <Grid item xs={12} sm={6} sx={{ marginTop: 6 }}>
-          <Grid container spacing={5}>
-            <Grid item xs={12}>
-              <FormControl fullWidth>
-                <InputLabel htmlFor="account-settings-new-password">
-                  Nova senha
-                </InputLabel>
-                <OutlinedInput
-                  label="New Password"
-                  value={values.newPassword}
-                  id="account-settings-new-password"
-                  onChange={handleNewPasswordChange("newPassword")}
-                  type={values.showNewPassword ? "text" : "password"}
-                  endAdornment={
-                    <InputAdornment position="end">
-                      <IconButton
-                        edge="end"
-                        onClick={handleClickShowNewPassword}
-                        aria-label="toggle password visibility"
-                        onMouseDown={handleMouseDownNewPassword}
-                      >
-                        {values.showNewPassword ? (
-                          <EyeOutline />
-                        ) : (
-                          <EyeOffOutline />
-                        )}
-                      </IconButton>
-                    </InputAdornment>
-                  }
-                />
-              </FormControl>
-            </Grid>
-
-            <Grid item xs={12}>
-              <FormControl fullWidth>
-                <InputLabel htmlFor="account-settings-confirm-new-password">
-                  Confirme a nova senha
-                </InputLabel>
-                <OutlinedInput
-                  label="Confirm New Password"
-                  value={values.confirmNewPassword}
-                  id="account-settings-confirm-new-password"
-                  type={values.showConfirmNewPassword ? "text" : "password"}
-                  onChange={handleConfirmNewPasswordChange(
-                    "confirmNewPassword"
-                  )}
-                  endAdornment={
-                    <InputAdornment position="end">
-                      <IconButton
-                        edge="end"
-                        aria-label="toggle password visibility"
-                        onClick={handleClickShowConfirmNewPassword}
-                        onMouseDown={handleMouseDownConfirmNewPassword}
-                      >
-                        {values.showConfirmNewPassword ? (
-                          <EyeOutline />
-                        ) : (
-                          <EyeOffOutline />
-                        )}
-                      </IconButton>
-                    </InputAdornment>
-                  }
-                />
-              </FormControl>
+        {showPasswordField && (
+          <Grid item xs={12} sm={6} sx={{ marginTop: 6 }}>
+            <Grid container spacing={5}>
+              <Grid item xs={12}>
+                <FormControl fullWidth>
+                  <InputLabel htmlFor="account-settings-new-password">
+                    Nova senha
+                  </InputLabel>
+                  <Controller
+                    name="password"
+                    control={control}
+                    defaultValue=""
+                    rules={{ required: showPasswordField }}
+                    render={({ field, fieldState }) => (
+                      <OutlinedInput
+                        label="Nova Senha"
+                        id="account-settings-new-password"
+                        type={showNewPassword ? "text" : "password"}
+                        {...field}
+                        error={!!fieldState.error}
+                        endAdornment={
+                          <InputAdornment position="end">
+                            <IconButton
+                              edge="end"
+                              onClick={handleClickShowNewPassword}
+                              aria-label="toggle password visibility"
+                              onMouseDown={handleMouseDownNewPassword}
+                            >
+                              {showNewPassword ? (
+                                <EyeOutline />
+                              ) : (
+                                <EyeOffOutline />
+                              )}
+                            </IconButton>
+                          </InputAdornment>
+                        }
+                      />
+                    )}
+                  />
+                </FormControl>
+              </Grid>
             </Grid>
           </Grid>
-        </Grid>
+        )}
+
+        {error && (
+          <Alert severity="error" sx={{ marginTop: 4, marginLeft: 4 }}>
+            {error}
+          </Alert>
+        )}
 
         <Grid item xs={12} sx={{ marginTop: 10 }}>
-          <Button variant="contained" sx={{ marginRight: 3.5 }}>
+          <LoadingButton
+            loading={isLoading}
+            type="submit"
+            variant="contained"
+            sx={{ marginRight: 3.5 }}
+          >
             Salvar alterações
-          </Button>
+          </LoadingButton>
           <Button
+            disabled={isLoading}
             color="error"
             sx={{ marginRight: 3.5 }}
             onClick={() => setModalVisible(true)}
@@ -187,6 +199,7 @@ const TabAccount = () => {
       </form>
 
       <ModalRemoverFuncionario
+        onClick={deleteEmployee}
         visible={modalVisible}
         closeModal={() => setModalVisible(false)}
       />

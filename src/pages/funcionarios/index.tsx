@@ -1,21 +1,19 @@
-import React, { useState } from "react";
-import { Grid, Box, Button, Typography } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { Grid, Box, Typography } from "@mui/material";
 import Loading from "src/layouts/components/Loading";
 import CardFuncionario from "src/views/cards/CardFuncionario";
 import { Funcionario } from "src/models";
-
-// import { Container } from './styles';
+import { listarFuncionarios } from "src/services/funcionarios";
 
 const Funcionarios: React.FC = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [funcionarios, setFuncionarios] = useState([
-    {
-      id: 1,
-      nome: "John Doe",
-      email: "johnDoe@example.com",
-      password: "",
-    },
-  ]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [funcionarios, setFuncionarios] = useState([]);
+
+  useEffect(() => {
+    listarFuncionarios()
+      .then(setFuncionarios)
+      .finally(() => setIsLoading(false));
+  }, []);
 
   return (
     <Box>
