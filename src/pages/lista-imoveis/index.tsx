@@ -1,15 +1,12 @@
 import { Grid, Box, Button, Typography } from "@mui/material";
 import router from "next/router";
-import { useContext, useEffect, useState } from "react";
-import { UserContext } from "src/@core/context/UserContext";
+import { useEffect, useState } from "react";
 import Loading from "src/layouts/components/Loading";
 import { Imovel } from "src/models";
 import { listarImoveis } from "src/services/imovel";
 import CardImovel from "src/views/cards/CardImovelLista";
 
 const ListaDeImoveis = () => {
-  const funcionario = useContext(UserContext);
-
   const [isLoading, setIsLoading] = useState(true);
 
   const [listaDeImoveis, setListaDeImoveis] = useState([]);
@@ -18,7 +15,7 @@ const ListaDeImoveis = () => {
 
   useEffect(() => {
     setIsLoading(true);
-    listarImoveis(funcionario.user.id).then((imoveis) => {
+    listarImoveis().then((imoveis) => {
       setListaDeImoveis(imoveis);
       setIsLoading(false);
     });
