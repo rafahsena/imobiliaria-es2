@@ -42,17 +42,14 @@ async function populateDB() {
     const tipos = await prisma.tipo.createMany({
         data: [
             {
-                nome: 'apartamento'
+                nome: 'Casa'
             },
             {
-                nome: 'casa'
+                nome: 'Terreno'
             },
             {
-                nome: 'terreno'
+                nome: 'Apartamento'
             },
-            {
-                nome: 'comercial'
-            }
         ]
     })
 
