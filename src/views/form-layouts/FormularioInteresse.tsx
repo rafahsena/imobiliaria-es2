@@ -86,7 +86,7 @@ const FormularioInteresse = ({anuncioId}: FormularioInteresseProps) => {
                   }}
                 >
                   <Button type="submit" variant="contained" size="large" disabled={isLoading}>
-                    {isLoading ? <Loading /> : 'Demonstrar interesse' }
+                    {isLoading ? <div style={{width: 20, height: 20}}><Loading /></div> : 'Demonstrar interesse' }
                   </Button>
                 </Box>
               </Grid>
