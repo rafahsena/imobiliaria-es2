@@ -10,6 +10,7 @@ import CardAnuncio from "src/views/cards/CardAnuncioLista";
 
 const ListaDeAnuncios = () => {
   const [anuncios, setAnuncios] = useState<Anuncio[]>([])
+  const [filteredAnuncios, setFilteredAnuncios] = useState<Anuncio[]>([])
   const [isLoading, setIsLoading] = useState(false);
   const { searchTerm, setSearchTerm } = useContext(SearchContext);
 
@@ -24,12 +25,13 @@ const ListaDeAnuncios = () => {
     setIsLoading(true)
     await listarAnuncios().then((anuncios: Anuncio[]) => {
       setAnuncios(anuncios);
+      setFilteredAnuncios(anuncios)
       setIsLoading(false);
     });
   }
 
   useEffect(() => {
-    setAnuncios(searchList())
+    setFilteredAnuncios(searchList())
   }, [debouncedSearchTerm])
 
   const searchList = () => {
@@ -43,14 +45,14 @@ const ListaDeAnuncios = () => {
 
   return (
     <Grid container spacing="2">
-      {!isLoading && anuncios.map((anuncio: Anuncio) => {
+      {!isLoading && filteredAnuncios.map((anuncio: Anuncio) => {
         return (
           <Grid item xs={12} sm={6} md={4} key={anuncio.id}>
             <CardAnuncio {...anuncio} />
           </Grid>
         )
       })}
-      {anuncios.length === 0 && !isLoading && (
+      {filteredAnuncios.length === 0 && !isLoading && (
           <Box height={400} display="flex" margin="auto">
             <Box
               display="flex"
@@ -62,7 +64,7 @@ const ListaDeAnuncios = () => {
             </Box>
           </Box>
         )}
-      {isLoading && anuncios.length === 0 && <Loading />}
+      {isLoading && filteredAnuncios.length === 0 && <Loading />}
     </Grid>
   );
 };

@@ -51,8 +51,6 @@ const AdCard = ({
         <Grid item xl={3}></Grid>
       </Grid>
 
-      {console.log(imovel)}
-
       <Link href={`/detalhes-anuncio/${imovel?.id}/interesse`}>
         <Button
           variant="contained"

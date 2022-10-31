@@ -39,7 +39,6 @@ const FormularioInteresse = ({anuncioId}: FormularioInteresseProps) => {
       setIsLoading(false)
       router.push(`/detalhes-anuncio/${anuncioId}`);
     } catch (e) {
-      console.log({e})
       setError("Não foi possível cadastrar o interesse");
       setIsLoading(false)
     }
