@@ -24,8 +24,8 @@ async function resetDB() {
 async function populateDB() {
     const funcionario = await prisma.funcionario.create({
         data: {
-            nome: 'Ze pezão',
-            email: 'ze@email.com',
+            nome: 'Rafael Sena',
+            email: 'rafaelsena@gmail.com',
             password: bcrypt.hashSync('password', 10)
         }
     })
