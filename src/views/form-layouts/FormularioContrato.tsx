@@ -17,11 +17,17 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
 // import { Container } from './styles';
 
-const FormularioContrato = () => {
+const FormularioContrato = ({ onSubmit }) => {
   const [tipo, setTipo] = useState("v");
   const [vencimento, setVencimento] = useState(new Date());
   const [dataAssinatura, setDataAssinatura] = useState(new Date());
   const [valor, setValor] = useState(0);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    onSubmit();
+  };
 
   return (
     <Card>
@@ -30,7 +36,7 @@ const FormularioContrato = () => {
           title="Sobre o anúncio"
           titleTypographyProps={{ variant: "h6" }}
         />
-        <form onSubmit={(e) => e.preventDefault()}>
+        <form onSubmit={handleSubmit}>
           <Grid item xs={12} sx={{ marginBottom: 5 }}>
             <Select
               autoWidth
