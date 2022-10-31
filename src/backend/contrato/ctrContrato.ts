@@ -22,11 +22,16 @@ export const emitirContrato = async (body: {contrato: Contrato, cliente: Cliente
     data: {...body.cliente, enderecoId: endereco.id}
   })
 
-  const contrato = await prisma.contrato.create({
+  await prisma.contrato.create({
     data: { ...body.contrato, clienteId: cliente.id }
   });
 
-  return { endereco, cliente, contrato }
+  const contrato = await prisma.contrato.findFirst({where: {id: body.contrato.imovelId}, select: {
+    imovel: true,
+    cliente: { select: { endereco: true } },
+  }});
+
+  return contrato
 };
 
 export const revogarContrato = async (id: number) => {
