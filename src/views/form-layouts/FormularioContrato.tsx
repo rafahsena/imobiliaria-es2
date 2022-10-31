@@ -1,6 +1,5 @@
 // ** React Imports
-import { ChangeEvent, MouseEvent, useState, SyntheticEvent } from "react";
-
+import { useState } from "react";
 // ** MUI Imports
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
@@ -9,39 +8,72 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import CardHeader from "@mui/material/CardHeader";
 import CardContent from "@mui/material/CardContent";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
+import Typography from "@mui/material/Typography";
+import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-
-// import { Container } from './styles';
+import { useRouter } from "next/router";
 
 const FormularioContrato = ({ onSubmit }) => {
-  const [tipo, setTipo] = useState("v");
-  const [vencimento, setVencimento] = useState(new Date());
-  const [dataAssinatura, setDataAssinatura] = useState(new Date());
-  const [valor, setValor] = useState(0);
+  const router = useRouter();
+
+  const [contrato, setContrato] = useState({
+    tipo: "v",
+    vencimento: new Date(),
+    dataDaAssinatura: new Date(),
+    valor: 0,
+    imovelId: router.query.id,
+  });
+
+  const [cliente, setCliente] = useState({
+    nome: "",
+    cpf: "",
+    rg: "",
+    dataDeNascimento: new Date(),
+    telefone: "",
+    email: "",
+  });
+
+  const [enderecoCliente, setEnderecoCliente] = useState({
+    logradouro: "",
+    cidade: "",
+    estado: "",
+    pais: "",
+    cep: "",
+    complemento: "",
+    numero: "",
+  });
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    onSubmit();
+    console.log({ contrato, cliente, enderecoCliente });
+
+    // onSubmit();
   };
 
   return (
     <Card>
       <CardContent>
-        <CardHeader
-          title="Sobre o contrato"
-          titleTypographyProps={{ variant: "h6" }}
-        />
         <form onSubmit={handleSubmit}>
+          <CardHeader
+            title="Sobre o contrato"
+            titleTypographyProps={{ variant: "h6" }}
+          />
+
           <Grid item xs={12} sx={{ marginBottom: 5 }}>
+            <Typography>Tipo de contrato</Typography>
             <Select
               autoWidth
-              value={tipo}
-              onChange={(value) => setTipo(value.target.value)}
+              value={contrato.tipo}
+              onChange={(value) =>
+                setContrato((prevState) => ({
+                  ...prevState,
+                  tipo: value.target.value,
+                }))
+              }
             >
               <MenuItem value={"v"}>Venda</MenuItem>
               <MenuItem value={"a"}>Aluguel</MenuItem>
@@ -52,11 +84,14 @@ const FormularioContrato = ({ onSubmit }) => {
             <Grid item xs={12}>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DatePicker
-                  label="Basic example"
-                  value={vencimento}
-                  onChange={(newValue: any) => {
-                    setVencimento(new Date(newValue));
-                  }}
+                  label="Vencimento"
+                  value={contrato.vencimento}
+                  onChange={(value: any) =>
+                    setContrato((prevState) => ({
+                      ...prevState,
+                      vencimento: value.target.value,
+                    }))
+                  }
                   renderInput={(params) => <TextField {...params} />}
                 />
               </LocalizationProvider>
@@ -65,11 +100,14 @@ const FormularioContrato = ({ onSubmit }) => {
             <Grid item xs={12}>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DatePicker
-                  label="Basic example"
-                  value={dataAssinatura}
-                  onChange={(newValue: any) => {
-                    setDataAssinatura(new Date(newValue));
-                  }}
+                  label="Data da Assinatura"
+                  value={contrato.dataDaAssinatura}
+                  onChange={(value: any) =>
+                    setContrato((prevState) => ({
+                      ...prevState,
+                      dataDaAssinatura: value.target.value,
+                    }))
+                  }
                   renderInput={(params) => <TextField {...params} />}
                 />
               </LocalizationProvider>
@@ -80,8 +118,202 @@ const FormularioContrato = ({ onSubmit }) => {
                 fullWidth
                 label="Valor"
                 type="number"
-                value={valor}
-                onChange={(value) => setValor(Number(value.target.value))}
+                value={contrato.valor}
+                onChange={(value) =>
+                  setContrato((prevState) => ({
+                    ...prevState,
+                    valor: Number(value.target.value),
+                  }))
+                }
+              />
+            </Grid>
+
+            <CardHeader
+              title="Sobre o cliente"
+              titleTypographyProps={{ variant: "h6" }}
+            />
+
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                label="Nome"
+                value={cliente.nome}
+                onChange={(value) =>
+                  setCliente((prevState) => ({
+                    ...prevState,
+                    nome: value.target.value,
+                  }))
+                }
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                label="CPF"
+                value={cliente.cpf}
+                onChange={(value) =>
+                  setCliente((prevState) => ({
+                    ...prevState,
+                    cpf: value.target.value,
+                  }))
+                }
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                label="RG"
+                value={cliente.rg}
+                onChange={(value) =>
+                  setCliente((prevState) => ({
+                    ...prevState,
+                    rg: value.target.value,
+                  }))
+                }
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DatePicker
+                  label="Data de Nascimento"
+                  value={cliente.dataDeNascimento}
+                  onChange={(value: any) =>
+                    setCliente((prevState) => ({
+                      ...prevState,
+                      dataDeNascimento: value.target.value,
+                    }))
+                  }
+                  renderInput={(params) => <TextField {...params} />}
+                />
+              </LocalizationProvider>
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                label="Telefone"
+                value={cliente.telefone}
+                onChange={(value) =>
+                  setCliente((prevState) => ({
+                    ...prevState,
+                    telefone: value.target.value,
+                  }))
+                }
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                label="Email"
+                value={cliente.email}
+                onChange={(value) =>
+                  setCliente((prevState) => ({
+                    ...prevState,
+                    email: value.target.value,
+                  }))
+                }
+              />
+            </Grid>
+
+            <CardHeader
+              title="Endereço do cliente"
+              titleTypographyProps={{ variant: "h6" }}
+            />
+
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                label="Logradouro"
+                value={enderecoCliente.logradouro}
+                onChange={(value) =>
+                  setEnderecoCliente((prevState) => ({
+                    ...prevState,
+                    logradouro: value.target.value,
+                  }))
+                }
+              />
+            </Grid>
+
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                label="Cidade"
+                value={enderecoCliente.cidade}
+                onChange={(value) =>
+                  setEnderecoCliente((prevState) => ({
+                    ...prevState,
+                    cidade: value.target.value,
+                  }))
+                }
+              />
+            </Grid>
+
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                label="Estado"
+                value={enderecoCliente.estado}
+                onChange={(value) =>
+                  setEnderecoCliente((prevState) => ({
+                    ...prevState,
+                    estado: value.target.value,
+                  }))
+                }
+              />
+            </Grid>
+
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                label="CEP"
+                value={enderecoCliente.cep}
+                onChange={(value) =>
+                  setEnderecoCliente((prevState) => ({
+                    ...prevState,
+                    cep: value.target.value,
+                  }))
+                }
+              />
+            </Grid>
+
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                label="País"
+                value={enderecoCliente.pais}
+                onChange={(value) =>
+                  setEnderecoCliente((prevState) => ({
+                    ...prevState,
+                    pais: value.target.value,
+                  }))
+                }
+              />
+            </Grid>
+
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                label="Complemento"
+                value={enderecoCliente.complemento}
+                onChange={(value) =>
+                  setEnderecoCliente((prevState) => ({
+                    ...prevState,
+                    complemento: value.target.value,
+                  }))
+                }
+              />
+            </Grid>
+
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                label="Número"
+                value={enderecoCliente.numero}
+                onChange={(value) =>
+                  setEnderecoCliente((prevState) => ({
+                    ...prevState,
+                    numero: value.target.value,
+                  }))
+                }
               />
             </Grid>
 
