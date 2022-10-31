@@ -30,6 +30,16 @@ export const alterarFuncionario = async (id, funcionario) => {
   }
 };
 
+export const cadastrarFuncionario = async (funcionario) => {
+  try {
+    const response = await api.post(`/funcionarios`, funcionario);
+    return response.data;
+  } catch (e) {
+    console.log(e);
+    throw new Error("Não foi possível cadastrar o funcionário");
+  }
+};
+
 export const removerFuncionario = async (id) => {
   try {
     return await api.delete(`/funcionarios/${id}`);
