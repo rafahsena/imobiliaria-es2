@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Imovel, Endereco, Contrato, Cliente, Tipo } from "@prisma/client";
 import Button from "@mui/material/Button";
 import {
   Document,
@@ -9,7 +10,26 @@ import {
   View,
 } from "@react-pdf/renderer";
 
-export const DefaultPDF = () => {
+type ContractProps = {
+  endereco: Endereco;
+  tipo: Tipo;
+  imovel: Imovel;
+  contrato: Contrato;
+  cliente: Cliente;
+};
+
+export const DefaultPDF = ({
+  endereco,
+  tipo,
+  imovel,
+  contrato,
+  cliente,
+}: ContractProps) => {
+  const tipoEnum = {
+    v: "vender",
+    a: "alugar",
+  };
+
   return (
     <Document>
       <Page>
@@ -22,24 +42,33 @@ export const DefaultPDF = () => {
           </Text>
           <View style={styles.contractHeader}>
             <View>
-              <Text style={styles.contractTitle}>Locatário</Text>
-              <Text style={styles.contractPerson}>Pessoa 1</Text>
+              <Text style={styles.contractTitle}>Responsável</Text>
+              <Text style={styles.contractPerson}>Kit In Net LTDA.</Text>
             </View>
             <View>
               <Text style={styles.contractTitle}>Inquilino</Text>
-              <Text style={styles.contractPerson}>Pessoa 2</Text>
+              <Text style={styles.contractPerson}>{cliente.nome}</Text>
             </View>
           </View>
           <Text style={styles.enderecoHeader}>
-            O Proprietário concorda em alugar o imóvel localizado em:
+            O Proprietário concorda em {tipoEnum[tipo.nome]} o imóvel localizado
+            em:
           </Text>
           <Text style={styles.enderecoBody}>
-            Av. Cel. Sizino da Rocha, 22, Jabotiana, Aracaju, Sergipe
+            {endereco.logradouro}, {endereco.numero}, {endereco.complemento}.{" "}
+            {endereco.cidade} - {endereco.estado}.{endereco.cep}.{" "}
+            {endereco.pais}
           </Text>
           <Text style={styles.contractTerms}>
-            O período do aluguel é de 1, começando 2 e deverá terminar ou a ser
-            renovado em 3 depois disso, no valor acordado de 4 a ser pago
-            mensalmente, e o valor de 5 a ser pago na execução desse contrato.
+            A data de vencimento deste contrato é{" "}
+            {contrato.vencimento.getDate()} de {contrato.vencimento.getMonth()}{" "}
+            de {contrato.vencimento.getFullYear()}, começando{" "}
+            {new Date().getDate()} de {new Date().getMonth()} de{" "}
+            {new Date().getFullYear()} e deverá terminar ou a ser renovado em 3
+            depois disso, no valor acordado de R$
+            {contrato.valor} a ser pago mensalmente, o valor de R$
+            {contrato.valor} a ser pago na execução desse contrato e o valor de
+            R${imovel.iptu} como IPTU do imóvel.
           </Text>
           <View style={styles.termsAndConditions}>
             <Text style={styles.termsAndConditionsTitle}>
@@ -60,13 +89,6 @@ export const DefaultPDF = () => {
               serviços de utilidade pública como luz, água, gás e outros
               serviços utilizados na propriedade.
             </Text>
-            <Text style={styles.termsAndConditionsSubTitle}>3. Móveis</Text>
-            <Text style={styles.termsAndConditionsDescription}>
-              O imóvel conta com os seguintes eletrodomésticos: geladeira de 2,5
-              metros cúbicos, fogão a gás, forno micro-ondas, lava louças,
-              máquina de lavar roupa automática e telefone. Danos e reparos
-              deverão ser de responsabilidade do inquilino.
-            </Text>
             <Text style={styles.termsAndConditionsSubTitle}>
               4. Reconhecimento
             </Text>
@@ -75,10 +97,14 @@ export const DefaultPDF = () => {
               Contrato.
             </Text>
           </View>
-          <Text style={styles.signTitle}>Assinado em 1 de 2, 3.</Text>
+          <Text style={styles.signTitle}>
+            Assinado em {contrato.dataAssinatura.getDate()} de{" "}
+            {contrato.dataAssinatura.getMonth()} de{" "}
+            {contrato.dataAssinatura.getFullYear()}
+          </Text>
           <View style={styles.signContainer}>
             <View style={styles.signWrapper}>
-              <Text style={styles.signSubTitle}>Proprietário</Text>
+              <Text style={styles.signSubTitle}>Responsável</Text>
             </View>
             <View style={styles.signWrapper}>
               <Text style={styles.signSubTitle}>Inquilino</Text>
@@ -167,14 +193,14 @@ const styles = StyleSheet.create({
   signSubTitle: {},
 });
 
-export const PDFReader = () => {
+export const PDFReader = (contrato: ContractProps) => {
   const [component, setComponent] = useState<any>();
 
   useEffect(() => {
     setComponent(
       <Button variant="contained">
         <PDFDownloadLink
-          document={<DefaultPDF />}
+          document={<DefaultPDF {...contrato} />}
           fileName={`contrato-${"sua-tia"}.pdf`}
           style={{ textDecoration: "none", color: "#fff" }}
         >
