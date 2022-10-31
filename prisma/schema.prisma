@@ -61,11 +61,11 @@ model Interessado {
   nome     String
   telefone String
   email    String
-  anuncio  InteressadosOnAnuncios[]
+  anuncio  InteressadosOnAnuncios[] 
 }
 
 model InteressadosOnAnuncios {
-  interessado   Interessado @relation(fields: [interessadoId], references: [id])
+  interessado   Interessado @relation(fields: [interessadoId], references: [id], onDelete: Cascade)
   interessadoId Int
   anuncio       Anuncio     @relation(fields: [anuncioId], references: [id], onDelete: Cascade)
   anuncioId     Int
