@@ -19,6 +19,7 @@ import TabAccount from "src/views/account-settings/TabAccount";
 
 // ** Third Party Styles Imports
 import "react-datepicker/dist/react-datepicker.css";
+import { getFuncionario } from "src/services/funcionarios";
 
 const Tab = styled(MuiTab)<TabProps>(({ theme }) => ({
   [theme.breakpoints.down("md")]: {
@@ -38,7 +39,7 @@ const TabName = styled("span")(({ theme }) => ({
   },
 }));
 
-const AccountSettings = () => {
+const AccountSettings = ({ funcionario }) => {
   // ** State
   const [value, setValue] = useState<string>("account");
 
@@ -66,11 +67,18 @@ const AccountSettings = () => {
         </TabList>
 
         <TabPanel sx={{ p: 0 }} value="account">
-          <TabAccount />
+          <TabAccount funcionario={funcionario} />
         </TabPanel>
       </TabContext>
     </Card>
   );
+};
+
+export const getServerSideProps = async (ctx) => {
+  const { id } = ctx.query;
+
+  const funcionario = await getFuncionario(id);
+  return { props: { funcionario } };
 };
 
 export default AccountSettings;

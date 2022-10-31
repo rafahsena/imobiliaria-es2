@@ -20,9 +20,14 @@ const style = {
 type ModalProps = {
   visible: boolean;
   closeModal: () => void;
+  onClick: React.MouseEventHandler<HTMLAnchorElement>;
 };
 
-const ModalRemoverFuncionario = ({ visible, closeModal }: ModalProps) => {
+const ModalRemoverFuncionario = ({
+  visible,
+  closeModal,
+  onClick,
+}: ModalProps) => {
   return (
     <>
       <Modal open={visible} onClose={closeModal}>
@@ -36,7 +41,9 @@ const ModalRemoverFuncionario = ({ visible, closeModal }: ModalProps) => {
 
           <CardActions sx={{ justifyContent: "space-around" }}>
             <Button onClick={closeModal}>Cancelar</Button>
-            <Button color="error">Remover Funcionário</Button>
+            <Button onClick={onClick} color="error">
+              Remover Funcionário
+            </Button>
           </CardActions>
         </Box>
       </Modal>
