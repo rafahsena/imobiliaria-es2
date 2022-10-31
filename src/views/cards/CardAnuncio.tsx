@@ -8,6 +8,8 @@ import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import conversions from "src/utils/conversions";
 import Link from "next/link";
+import { useContext } from "react";
+import { UserContext } from "src/@core/context/UserContext";
 
 const AdCard = ({
   titulo,
@@ -17,6 +19,8 @@ const AdCard = ({
   dataDeCriacao,
   imovel,
 }: Anuncio) => {
+  const funcionario = useContext(UserContext);
+  const isLogged = funcionario?.user?.id;
   const { moneyFormat, areaFormat, locationFormat } = conversions();
   return (
     <Container>
@@ -64,16 +68,18 @@ const AdCard = ({
         </Button>
       </Link>
       <Link href={`/detalhes-anuncio/${imovel?.id}/interessados`}>
-        <Button
-          variant="contained"
-          sx={{
-            py: 2.5,
-            mt: 2,
-            width: "100%",
-          }}
-        >
-          Ver Interessados
-        </Button>
+        {isLogged && (
+          <Button
+            variant="contained"
+            sx={{
+              py: 2.5,
+              mt: 2,
+              width: "100%",
+            }}
+          >
+            Ver Interessados
+          </Button>
+        )}
       </Link>
     </Container>
   );
