@@ -7,7 +7,7 @@ type ContractProps = {
   id: Number;
 };
 
-const EmitirContrato = ({ id }: ContractProps) => {
+const AlterarContrato = ({ id }: ContractProps) => {
   const router = useRouter();
 
   const onSubmit = () => {
@@ -16,4 +16,4 @@ const EmitirContrato = ({ id }: ContractProps) => {
   return <FormularioContrato onSubmit={onSubmit} />;
 };
 
-export default EmitirContrato;
+export default AlterarContrato;

@@ -202,7 +202,7 @@ export const PDFReader = (contrato: ContractProps) => {
         <PDFDownloadLink
           document={<DefaultPDF {...contrato} />}
           fileName={`contrato-${"sua-tia"}.pdf`}
-          style={{ textDecoration: "none", color: "#fff" }}
+          style={{ textDecoration: "none", color: "#fff", width: "100%" }}
         >
           {({ blob, url, loading, error }) =>
             loading

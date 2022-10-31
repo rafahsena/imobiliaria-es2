@@ -33,7 +33,7 @@ const FormularioContrato = ({ onSubmit }) => {
     <Card>
       <CardContent>
         <CardHeader
-          title="Sobre o anúncio"
+          title="Sobre o contrato"
           titleTypographyProps={{ variant: "h6" }}
         />
         <form onSubmit={handleSubmit}>

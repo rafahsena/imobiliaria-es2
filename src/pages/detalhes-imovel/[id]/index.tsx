@@ -7,6 +7,7 @@ import Loading from "src/layouts/components/Loading";
 import { Imovel } from "src/models";
 import { getImovel, removerImovel } from "src/services/imovel";
 import PropertyCard from "src/views/cards/PropertyCard";
+import ModalRevogarContrato from "src/views/utils/ModalRevogarContrato";
 
 type PropertyDetailsProps = {
   imovel: Imovel;
@@ -18,7 +19,6 @@ const PropertyDetails: React.FC<PropertyDetailsProps> = ({ imovel, id }) => {
   const [error, setError] = useState("");
 
   const router = useRouter();
-  const [openModal, setOpenModal] = useState(false);
 
   const redirectToCreateAdPage = () => {
     router.push(`/detalhes-imovel/${id}/criar-anuncio`);
@@ -26,6 +26,14 @@ const PropertyDetails: React.FC<PropertyDetailsProps> = ({ imovel, id }) => {
 
   const redirectToEditPropertyPage = () => {
     router.push(`/detalhes-imovel/${id}/alterar-imovel`);
+  };
+
+  const emitContrat = () => {
+    router.push(`/detalhes-imovel/${id}/emitir-contrato`);
+  };
+
+  const viewContract = () => {
+    router.push(`/detalhes-imovel/${id}/contrato`);
   };
 
   const deleteProperty = async () => {
@@ -38,10 +46,6 @@ const PropertyDetails: React.FC<PropertyDetailsProps> = ({ imovel, id }) => {
     } finally {
       setIsLoading(false);
     }
-  };
-
-  const emitContrat = () => {
-    router.push(`/detalhes-imovel/${id}/emitir-contrato`);
   };
 
   return isLoading ? (
@@ -58,6 +62,7 @@ const PropertyDetails: React.FC<PropertyDetailsProps> = ({ imovel, id }) => {
         onCreateAdClick={redirectToCreateAdPage}
         onEditPropertyClick={redirectToEditPropertyPage}
         onEmitContrat={emitContrat}
+        onViewContract={viewContract}
         imovel={imovel}
       />
     </>
