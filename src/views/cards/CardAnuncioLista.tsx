@@ -19,12 +19,10 @@ const AdCardList = (anuncio: Anuncio) => {
           {anuncio.titulo}
         </Typography>
         <Typography variant="subtitle1" sx={{ marginBottom: 2 }}>
-          {anuncio.imovel?.endereco.logradouro}
+          {anuncio.descricao}
         </Typography>
         <Typography variant="subtitle2" sx={{ marginBottom: 2 }}>
-          {anuncio.imovel?.endereco.cidade}/
-          {anuncio.imovel?.endereco.estado.slice(0, 2).toUpperCase()},{" "}
-          {anuncio.imovel?.endereco.pais}
+          {anuncio.tipo === "v" ? "Venda" : "Aluguel"}
         </Typography>
         <Typography sx={{ marginBottom: 2 }}>
           {moneyFormat(anuncio.valor)}

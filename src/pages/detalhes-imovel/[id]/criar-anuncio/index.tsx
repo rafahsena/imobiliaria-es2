@@ -9,18 +9,24 @@ import DatePickerWrapper from "src/@core/styles/libs/react-datepicker";
 // ** Demo Components Imports
 import FormularioAnuncio from "src/views/form-layouts/FormularioAnuncio";
 
-// import { Container } from './styles';
-
-const CriarAnuncio: React.FC = () => {
+type CriarAnuncioProps = {
+  imovelId: number;
+};
+const CriarAnuncio: React.FC<CriarAnuncioProps> = ({ imovelId }) => {
   return (
     <DatePickerWrapper>
       <Grid container spacing={6}>
         <Grid item xs={12} md={6}>
-          <FormularioAnuncio />
+          <FormularioAnuncio imovelId={imovelId} />
         </Grid>
       </Grid>
     </DatePickerWrapper>
   );
+};
+
+export const getServerSideProps = (ctx) => {
+  const { id } = ctx.query;
+  return { props: { imovelId: Number(id) } };
 };
 
 export default CriarAnuncio;
