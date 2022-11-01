@@ -15,15 +15,26 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { useRouter } from "next/router";
+import { Contrato } from "@prisma/client";
 
-const FormularioAlterarContrato = ({ onSubmit }) => {
+type AlterarContratoProps = {
+  onSubmit: (contrato: any) => Promise<void>;
+  contratoData: any;
+};
+
+const FormularioAlterarContrato = ({
+  onSubmit,
+  contratoData,
+}: AlterarContratoProps) => {
   const router = useRouter();
 
+  console.log(contratoData);
+
   const [contrato, setContrato] = useState({
-    tipo: "v",
-    vencimento: new Date(),
-    dataAssinatura: new Date(),
-    valor: 0,
+    tipo: contratoData.tipo.trim(),
+    vencimento: new Date(contratoData.vencimento),
+    dataAssinatura: new Date(contratoData.dataAssinatura),
+    valor: contratoData.valor,
     imovelId: Number(router.query.id),
   });
 

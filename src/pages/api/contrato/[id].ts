@@ -24,6 +24,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       await alterarContrato(Number(id), req.body);
       return res.status(200).json(true);
     } catch (e) {
+      console.log(e);
       res
         .status(404)
         .json({ error: "Couldn't find any contract with this id" });

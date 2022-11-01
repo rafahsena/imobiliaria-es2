@@ -22,6 +22,15 @@ export const verContrato = async (id) => {
   }
 };
 
+export const verContratos = async () => {
+  try {
+    const response = await api.get(`/contrato/`);
+    return response.data;
+  } catch (e) {
+    return {};
+  }
+};
+
 export const revogarContrato = async (id) => {
   try {
     const response = await api.delete(`/contrato/${id}`);
