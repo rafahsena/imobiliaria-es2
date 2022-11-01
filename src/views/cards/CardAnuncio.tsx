@@ -49,18 +49,20 @@ const AdCard = ({
           {imovel?.endereco && <AddressCard endereco={imovel.endereco} />}
         </Grid>
         <Grid item xl={5}>
-          <Link href={`/detalhes-anuncio/${id}/interesse`}>
-            <Button
-              variant="contained"
-              sx={{
-                py: 2.5,
-                mt: 2,
-                width: "100%",
-              }}
-            >
-              Preencher Formulário de Interesse
-            </Button>
-          </Link>
+          {!isLogged && (
+            <Link href={`/detalhes-anuncio/${id}/interesse`}>
+              <Button
+                variant="contained"
+                sx={{
+                  py: 2.5,
+                  mt: 2,
+                  width: "100%",
+                }}
+              >
+                Preencher Formulário de Interesse
+              </Button>
+            </Link>
+          )}
         </Grid>
         <Grid item xl={3}>
           {isLogged && (
