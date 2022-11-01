@@ -1,5 +1,9 @@
 import { NextApiResponse, NextApiRequest } from "next";
-import { deletarInteressado, demonstrarInteresse, listarInteressados } from "src/backend/interessados/ctrInteressados";
+import {
+  removerInteressado,
+  demonstrarInteresse,
+  listarInteressados,
+} from "src/backend/interessados/ctrInteressados";
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { id } = req.query;
@@ -24,7 +28,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   if (req.method === "DELETE") {
     try {
-      const interessados = await deletarInteressado(Number(id));
+      const interessados = await removerInteressado(Number(id));
       return res.status(200).json(interessados);
     } catch (e) {
       return res.status(400).json({ error: e });

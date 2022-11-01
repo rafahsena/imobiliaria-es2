@@ -8,39 +8,46 @@ import { listarInteressados } from "src/services/interessados";
 import CardInteressado from "src/views/cards/CardInteressado";
 
 type ListaDeInteressadosProps = {
-  anuncioId: number
-}
+  anuncioId: number;
+};
 
-const ListaDeInteressados = ({anuncioId}: ListaDeInteressadosProps) => {
-  const [interessados, setInteressados] = useState<Interessado[]>([])
-  const [isLoading, setIsLoading] = useState(false)
+const ListaDeInteressados = ({ anuncioId }: ListaDeInteressadosProps) => {
+  const [interessados, setInteressados] = useState<Interessado[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    getInteressados()
-  }, [])
+    getInteressados();
+  }, []);
 
   const getInteressados = async () => {
-    setIsLoading(true)
+    setIsLoading(true);
     const interessados = await listarInteressados(anuncioId);
-    setInteressados(interessados)
-    setIsLoading(false)
-  }
+    setInteressados(interessados);
+    setIsLoading(false);
+  };
 
   return (
     <Grid container spacing="2">
-      {!isLoading && interessados && interessados.map((interessado: Interessado) => (
-        <Grid item xs={12} sm={6} md={4} key={interessado.id}>
-          <CardInteressado {...interessado} />
-        </Grid>
-      ))}
+      {!isLoading &&
+        interessados &&
+        interessados.map((interessado: Interessado) => (
+          <Grid item xs={12} sm={6} md={4} key={interessado.id}>
+            <CardInteressado {...interessado} />
+          </Grid>
+        ))}
       {isLoading && <Loading />}
-      {!isLoading && interessados?.length <= 0 && 
-        <div style={{ justifyContent: 'center', display: 'flex', alignItems: 'center', width: '100%' }}>
-          <Typography >
-            Não existem interessados nesse anúncio
-          </Typography>
+      {!isLoading && interessados?.length <= 0 && (
+        <div
+          style={{
+            justifyContent: "center",
+            display: "flex",
+            alignItems: "center",
+            width: "100%",
+          }}
+        >
+          <Typography>Não existem interessados nesse anúncio</Typography>
         </div>
-      }
+      )}
       <Button
         variant="contained"
         onClick={() => router.push(`/detalhes-anuncio/${anuncioId}`)}
@@ -57,7 +64,6 @@ const ListaDeInteressados = ({anuncioId}: ListaDeInteressadosProps) => {
 };
 
 export const getServerSideProps: GetServerSideProps = async (context: any) => {
-
   return {
     props: {
       anuncioId: Number(context.query.id),

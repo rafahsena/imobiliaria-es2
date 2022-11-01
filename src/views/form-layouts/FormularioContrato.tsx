@@ -22,16 +22,16 @@ const FormularioContrato = ({ onSubmit }) => {
   const [contrato, setContrato] = useState({
     tipo: "v",
     vencimento: new Date(),
-    dataDaAssinatura: new Date(),
+    dataAssinatura: new Date(),
     valor: 0,
-    imovelId: router.query.id,
+    imovelId: Number(router.query.id),
   });
 
   const [cliente, setCliente] = useState({
     nome: "",
     cpf: "",
     rg: "",
-    dataDeNascimento: new Date(),
+    dataNascimento: new Date(),
     telefone: "",
     email: "",
   });
@@ -49,9 +49,7 @@ const FormularioContrato = ({ onSubmit }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    console.log({ contrato, cliente, enderecoCliente });
-
-    // onSubmit();
+    onSubmit({ contrato, cliente, endereco: enderecoCliente });
   };
 
   return (
@@ -89,7 +87,7 @@ const FormularioContrato = ({ onSubmit }) => {
                   onChange={(value: any) =>
                     setContrato((prevState) => ({
                       ...prevState,
-                      vencimento: value.target.value,
+                      vencimento: new Date(value),
                     }))
                   }
                   renderInput={(params) => <TextField {...params} />}
@@ -101,11 +99,11 @@ const FormularioContrato = ({ onSubmit }) => {
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DatePicker
                   label="Data da Assinatura"
-                  value={contrato.dataDaAssinatura}
+                  value={contrato.dataAssinatura}
                   onChange={(value: any) =>
                     setContrato((prevState) => ({
                       ...prevState,
-                      dataDaAssinatura: value.target.value,
+                      dataAssinatura: new Date(value),
                     }))
                   }
                   renderInput={(params) => <TextField {...params} />}
@@ -176,11 +174,11 @@ const FormularioContrato = ({ onSubmit }) => {
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DatePicker
                   label="Data de Nascimento"
-                  value={cliente.dataDeNascimento}
+                  value={cliente.dataNascimento}
                   onChange={(value: any) =>
                     setCliente((prevState) => ({
                       ...prevState,
-                      dataDeNascimento: value.target.value,
+                      dataNascimento: new Date(value),
                     }))
                   }
                   renderInput={(params) => <TextField {...params} />}

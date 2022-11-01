@@ -1,4 +1,5 @@
 import { Imovel, PrismaClient } from "@prisma/client";
+import { Endereco } from "src/models";
 
 const prisma = new PrismaClient();
 
@@ -18,7 +19,15 @@ export const getImovel = async (id: number) => {
   });
 };
 
-export const alterarImovel = async (id: number, imovel: Imovel) => {
+type ImovelWithEndereco = { endereco: Endereco } & Imovel;
+
+export const alterarImovel = async (id: number, imovel: ImovelWithEndereco) => {
+  console.log(imovel);
+  const up = await prisma.endereco.update({
+    where: { id: imovel.enderecoId },
+    data: { ...imovel.endereco },
+  });
+  console.log(up);
   return await prisma.imovel.update({
     where: { id },
     data: {

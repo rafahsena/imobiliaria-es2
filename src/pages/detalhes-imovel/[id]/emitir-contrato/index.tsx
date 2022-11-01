@@ -1,6 +1,7 @@
 import React from "react";
 import FormularioContrato from "src/views/form-layouts/FormularioContrato";
 import { useRouter } from "next/router";
+import { emitirContrato } from "src/services/contrato";
 // import { Container } from './styles';
 
 type ContractProps = {
@@ -10,8 +11,18 @@ type ContractProps = {
 const EmitirContrato = ({ id }: ContractProps) => {
   const router = useRouter();
 
-  const onSubmit = () => {
-    router.push(`/detalhes-imovel/${router.query.id}/contrato`);
+  const onSubmit = async ({ contrato, cliente, endereco }) => {
+    try {
+      const response = await emitirContrato({ contrato, cliente, endereco });
+
+      if (response) {
+        router.push(
+          `/detalhes-imovel/${router.query.id}/contrato/${response.contrato.id}`
+        );
+      }
+    } catch (e) {
+      console.log(e);
+    }
   };
   return <FormularioContrato onSubmit={onSubmit} />;
 };

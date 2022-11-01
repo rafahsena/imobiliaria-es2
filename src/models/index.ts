@@ -41,7 +41,7 @@ export interface Funcionario {
 }
 
 export interface Interessado {
-  id: number;
+  id?: number;
   nome: string;
   telefone: string;
   email: string;

@@ -1,12 +1,12 @@
 import { NextApiResponse, NextApiRequest } from "next";
-import { alterarAnuncio, getAnuncio } from "src/backend/anuncio/ctrAnuncio";
+import { alterarAnuncio, verAnuncio } from "src/backend/anuncio/ctrAnuncio";
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { id } = req.query;
   if (req.method === "GET") {
     try {
-      const anuncio = await getAnuncio(Number(id));
-      if (!anuncio) throw new Error('error')
+      const anuncio = await verAnuncio(Number(id));
+      if (!anuncio) throw new Error("error");
 
       res.status(200).json(anuncio);
     } catch (e) {

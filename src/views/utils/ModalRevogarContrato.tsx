@@ -20,9 +20,14 @@ const style = {
 type ModalProps = {
   visible: boolean;
   closeModal: () => void;
+  onAction: () => void;
 };
 
-const ModalRevogarContrato = ({ visible, closeModal }: ModalProps) => {
+const ModalRevogarContrato = ({
+  visible,
+  closeModal,
+  onAction,
+}: ModalProps) => {
   return (
     <>
       <Modal open={visible} onClose={closeModal}>
@@ -36,7 +41,9 @@ const ModalRevogarContrato = ({ visible, closeModal }: ModalProps) => {
 
           <CardActions sx={{ justifyContent: "space-around" }}>
             <Button onClick={closeModal}>Cancelar</Button>
-            <Button color="error">Revogar contrato</Button>
+            <Button onClick={onAction} color="error">
+              Revogar contrato
+            </Button>
           </CardActions>
         </Box>
       </Modal>

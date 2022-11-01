@@ -13,10 +13,10 @@ import Loading from "src/layouts/components/Loading";
 // import { Container } from './styles';
 
 type FormularioInteresseProps = {
-  anuncioId: number
-}
+  anuncioId: number;
+};
 
-const FormularioInteresse = ({anuncioId}: FormularioInteresseProps) => {
+const FormularioInteresse = ({ anuncioId }: FormularioInteresseProps) => {
   const [nome, setNome] = useState("");
   const [telefone, setTelefone] = useState("");
   const [email, setEmail] = useState("");
@@ -24,28 +24,27 @@ const FormularioInteresse = ({anuncioId}: FormularioInteresseProps) => {
   const [error, setError] = useState("");
 
   const handleSubmit = async (e: any) => {
-    setIsLoading(true)
+    setIsLoading(true);
     e.preventDefault();
 
     try {
       const interesse = {
-        id: 0,
         nome,
         telefone,
         email,
       };
       setError("");
-      await demonstrarInteresse(anuncioId, interesse)
-      setIsLoading(false)
+      await demonstrarInteresse(anuncioId, interesse);
+      setIsLoading(false);
       router.push(`/detalhes-anuncio/${anuncioId}`);
     } catch (e) {
       setError("Não foi possível cadastrar o interesse");
-      setIsLoading(false)
+      setIsLoading(false);
     }
   };
 
   return (
-    <> 
+    <>
       <Card>
         <form onSubmit={handleSubmit}>
           <CardContent>
@@ -85,8 +84,19 @@ const FormularioInteresse = ({anuncioId}: FormularioInteresseProps) => {
                     justifyContent: "center",
                   }}
                 >
-                  <Button type="submit" variant="contained" size="large" disabled={isLoading}>
-                    {isLoading ? <div style={{width: 20, height: 20}}><Loading /></div> : 'Demonstrar interesse' }
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    size="large"
+                    disabled={isLoading}
+                  >
+                    {isLoading ? (
+                      <div style={{ width: 20, height: 20 }}>
+                        <Loading />
+                      </div>
+                    ) : (
+                      "Demonstrar interesse"
+                    )}
                   </Button>
                 </Box>
               </Grid>
