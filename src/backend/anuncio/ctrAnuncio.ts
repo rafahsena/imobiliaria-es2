@@ -9,7 +9,10 @@ export const cadastrarAnuncio = async (anuncio: Anuncio) => {
 };
 
 export const verAnuncio = async (id: number) => {
-  return await prisma.anuncio.findFirst({ where: { id } });
+  return await prisma.anuncio.findFirst({
+    where: { id },
+    include: { imovel: { include: { endereco: true } } },
+  });
 };
 
 export const alterarAnuncio = async (id: number, anuncio: Anuncio) => {

@@ -16,6 +16,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       const anuncio = await cadastrarAnuncio(dadosAnuncio);
       res.status(200).json(anuncio);
     } catch (e) {
+      console.log(e);
       res
         .status(400)
         .json({ error: "Couldn't create the announcement entity" });
