@@ -20,14 +20,14 @@ const AdCard = ({
 }: Anuncio) => {
   const funcionario = useContext(UserContext);
   const isLogged = funcionario?.user?.id;
-  const { moneyFormat, areaFormat } = conversions();
+  const { moneyFormat, areaFormat, dateFormat } = conversions();
   return (
     <Container>
       <Typography variant="h3" sx={{ marginBottom: 2 }}>
         {titulo}
       </Typography>
       <Typography variant="subtitle1">
-        Data de publicação: {dataDeCriacao}
+        Data de publicação: {dateFormat(dataDeCriacao)}
       </Typography>
       <Typography variant="h6" sx={{ marginY: 2 }}>
         Valor: {moneyFormat(valor)}

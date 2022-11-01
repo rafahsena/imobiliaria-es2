@@ -16,6 +16,11 @@ const conversions = () => {
     return "indefinido";
   };
 
+  const dateFormat = (date) => {
+    let newDate = date.split("T")[0];
+    return newDate.split("-").reverse().join("/");
+  };
+
   const stateShortFormat = (state: string | undefined) => {
     switch (state) {
       case "Acre":
@@ -87,6 +92,7 @@ const conversions = () => {
     moneyFormat,
     areaFormat,
     locationFormat,
+    dateFormat,
   };
 };
 
