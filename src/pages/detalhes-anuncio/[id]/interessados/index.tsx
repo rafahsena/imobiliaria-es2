@@ -3,7 +3,6 @@ import { GetServerSideProps } from "next";
 import router from "next/router";
 import { useEffect, useState } from "react";
 import Loading from "src/layouts/components/Loading";
-import mock from "src/mock";
 import { Interessado } from "src/models";
 import { listarInteressados } from "src/services/interessados";
 import CardInteressado from "src/views/cards/CardInteressado";

@@ -41,6 +41,7 @@ const ModalRemoverFuncionario = ({
 
           <CardActions sx={{ justifyContent: "space-around" }}>
             <Button onClick={closeModal}>Cancelar</Button>
+            {/* @ts-ignore */}
             <Button onClick={onClick} color="error">
               Remover Funcionário
             </Button>
