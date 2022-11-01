@@ -49,8 +49,6 @@ const FormularioContrato = ({ onSubmit }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    console.log({ contrato, cliente, enderecoCliente });
-
     onSubmit({ contrato, cliente, endereco: enderecoCliente });
   };
 
