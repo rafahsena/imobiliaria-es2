@@ -15,10 +15,10 @@ const EmitirContrato = ({ id }: ContractProps) => {
     try {
       const response = await emitirContrato({ contrato, cliente, endereco });
 
-      console.log(response);
-
       if (response) {
-        // router.push(`/detalhes-imovel/${router.query.id}/contrato`);
+        router.push(
+          `/detalhes-imovel/${router.query.id}/contrato/${response.contrato.id}`
+        );
       }
     } catch (e) {
       console.log(e);

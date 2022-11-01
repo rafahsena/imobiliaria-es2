@@ -1,16 +1,20 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { PDFReader } from "src/views/utils/ContratoPDF";
 import { useRouter } from "next/router";
 import ModalRevogarContrato from "src/views/utils/ModalRevogarContrato";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
+import { verContrato } from "src/services/contrato";
+import { GetServerSideProps } from "next";
 
 // import { Container } from './styles';
 
-const Contrato: React.FC = () => {
+const Contrato: React.FC = ({ contratoId }: any) => {
   const router = useRouter();
   const [openModalRevogarContrato, setOpenModalRevogarContrato] =
     useState(false);
+
+  const [contrato, setContrato] = useState<any>(null);
 
   const redirectToChangeContract = () => {
     router.push(`/detalhes-imovel/${router.query.id}/alterar-contrato`);
@@ -19,9 +23,34 @@ const Contrato: React.FC = () => {
   const cancelContract = () => {
     setOpenModalRevogarContrato(true);
   };
+
+  const handleGetContrato = async () => {
+    try {
+      const response = await verContrato(contratoId);
+
+      console.log(response);
+
+      setContrato(response);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  useEffect(() => {
+    handleGetContrato();
+  }, []);
+
   return (
     <>
-      {/* <PDFReader /> */}
+      {contrato && (
+        <PDFReader
+          contrato={contrato}
+          endereco={contrato.imovel.endereco}
+          funcionario={contrato.imovel.funcionario}
+          cliente={contrato.cliente}
+          imovel={contrato.imovel}
+        />
+      )}
 
       <Button variant="contained" onClick={redirectToChangeContract}>
         Alterar Contrato
@@ -42,6 +71,16 @@ const Contrato: React.FC = () => {
       />
     </>
   );
+};
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const contratoId = context.query.contratoId;
+
+  return {
+    props: {
+      contratoId,
+    },
+  };
 };
 
 export default Contrato;

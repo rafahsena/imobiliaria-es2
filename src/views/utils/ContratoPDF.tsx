@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Imovel, Endereco, Contrato, Cliente, Tipo } from "@prisma/client";
+import {
+  Imovel,
+  Endereco,
+  Contrato,
+  Cliente,
+  Tipo,
+  Funcionario,
+} from "@prisma/client";
 import Button from "@mui/material/Button";
 import {
   Document,
@@ -12,7 +19,7 @@ import {
 
 type ContractProps = {
   endereco: Endereco;
-  tipo: Tipo;
+  funcionario: Funcionario;
   imovel: Imovel;
   contrato: Contrato;
   cliente: Cliente;
@@ -20,7 +27,7 @@ type ContractProps = {
 
 export const DefaultPDF = ({
   endereco,
-  tipo,
+  funcionario,
   imovel,
   contrato,
   cliente,
@@ -29,6 +36,21 @@ export const DefaultPDF = ({
     v: "vender",
     a: "alugar",
   };
+
+  const meses = [
+    "janeiro",
+    "fevereiro",
+    "março",
+    "abril",
+    "maio",
+    "junho",
+    "julho",
+    "agosto",
+    "setembro",
+    "outubro",
+    "novembro",
+    "dezembro",
+  ];
 
   return (
     <Document>
@@ -51,8 +73,8 @@ export const DefaultPDF = ({
             </View>
           </View>
           <Text style={styles.enderecoHeader}>
-            O Proprietário concorda em {tipoEnum[tipo.nome]} o imóvel localizado
-            em:
+            O Proprietário concorda em {tipoEnum[contrato.tipo.trim()]} o imóvel
+            localizado em:
           </Text>
           <Text style={styles.enderecoBody}>
             {endereco.logradouro}, {endereco.numero}, {endereco.complemento}.{" "}
@@ -61,14 +83,16 @@ export const DefaultPDF = ({
           </Text>
           <Text style={styles.contractTerms}>
             A data de vencimento deste contrato é{" "}
-            {contrato.vencimento.getDate()} de {contrato.vencimento.getMonth()}{" "}
-            de {contrato.vencimento.getFullYear()}, começando{" "}
-            {new Date().getDate()} de {new Date().getMonth()} de{" "}
-            {new Date().getFullYear()} e deverá terminar ou a ser renovado em 3
-            depois disso, no valor acordado de R$
-            {contrato.valor} a ser pago mensalmente, o valor de R$
-            {contrato.valor} a ser pago na execução desse contrato e o valor de
-            R${imovel.iptu} como IPTU do imóvel.
+            {new Date(contrato.vencimento).getDate()} de{" "}
+            {meses[new Date(contrato.vencimento).getMonth()]} de{" "}
+            {new Date(contrato.vencimento).getFullYear()}, começando{" "}
+            {new Date().getDate()} de {meses[new Date().getMonth()]} de{" "}
+            {new Date().getFullYear()} no valor acordado de R$
+            {Number(contrato.valor).toFixed(2)} a ser pago mensalmente, o valor
+            de R$
+            {Number(contrato.valor).toFixed(2)} a ser pago na execução desse
+            contrato e o valor de R${Number(imovel.iptu).toFixed(2)} como IPTU
+            do imóvel.
           </Text>
           <View style={styles.termsAndConditions}>
             <Text style={styles.termsAndConditionsTitle}>
@@ -90,7 +114,7 @@ export const DefaultPDF = ({
               serviços utilizados na propriedade.
             </Text>
             <Text style={styles.termsAndConditionsSubTitle}>
-              4. Reconhecimento
+              3. Reconhecimento
             </Text>
             <Text style={styles.termsAndConditionsDescription}>
               As partes reconhecem e entendem os termos aqui estabelecidos neste
@@ -98,9 +122,9 @@ export const DefaultPDF = ({
             </Text>
           </View>
           <Text style={styles.signTitle}>
-            Assinado em {contrato.dataAssinatura.getDate()} de{" "}
-            {contrato.dataAssinatura.getMonth()} de{" "}
-            {contrato.dataAssinatura.getFullYear()}
+            Assinado em {new Date(contrato.dataAssinatura).getDate()} de{" "}
+            {meses[new Date(contrato.dataAssinatura).getMonth()]} de{" "}
+            {new Date(contrato.dataAssinatura).getFullYear()}
           </Text>
           <View style={styles.signContainer}>
             <View style={styles.signWrapper}>

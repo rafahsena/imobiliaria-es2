@@ -9,9 +9,9 @@ export const listarContratos = async () => {
 export const getContrato = async (id: number) => {
   return await prisma.contrato.findFirst({
     where: { id },
-    select: {
+    include: {
       cliente: true,
-      imovel: { select: { endereco: true, funcionario: true } },
+      imovel: { include: { endereco: true, funcionario: true } },
     },
   });
 };
@@ -29,7 +29,7 @@ export const emitirContrato = async (body: {
     data: { ...body.cliente, enderecoId: endereco.id },
   });
 
-  await prisma.contrato.create({
+  const contrato = await prisma.contrato.create({
     data: { ...body.contrato, clienteId: cliente.id },
   });
 
@@ -40,13 +40,13 @@ export const emitirContrato = async (body: {
     where: { id: imovel?.enderecoId },
   });
 
-  const contrato = await prisma.contrato.findFirst({
-    where: { id: body.contrato.imovelId },
-    select: {
-      imovel: true,
-      cliente: { select: { endereco: true } },
-    },
-  });
+  // const contrato = await prisma.contrato.findFirst({
+  //   where: { id: body.contrato.imovelId },
+  //   select: {
+  //     imovel: true,
+  //     cliente: { select: { endereco: true } },
+  //   },
+  // });
 
   return { contrato, cliente, endereco, enderecoImovel };
 };
