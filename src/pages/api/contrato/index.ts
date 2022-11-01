@@ -1,5 +1,8 @@
 import { NextApiResponse, NextApiRequest } from "next";
-import { emitirContrato, listarContratos } from "src/backend/contrato/ctrContrato";
+import {
+  emitirContrato,
+  listarContratos,
+} from "src/backend/contrato/ctrContrato";
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "GET") {
@@ -13,10 +16,13 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   if (req.method === "POST") {
     try {
-      await emitirContrato(req.body);
-      res.status(201);
+      const contrato = await emitirContrato(req.body);
+
+      res.status(201).json(contrato);
     } catch (e) {
-      res.status(401).json({ error: "Send the right fields to create a contract" });
+      res
+        .status(401)
+        .json({ error: "Send the right fields to create a contract" });
     }
   }
 };
