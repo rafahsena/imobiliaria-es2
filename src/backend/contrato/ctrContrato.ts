@@ -40,14 +40,6 @@ export const emitirContrato = async (body: {
     where: { id: imovel?.enderecoId },
   });
 
-  // const contrato = await prisma.contrato.findFirst({
-  //   where: { id: body.contrato.imovelId },
-  //   select: {
-  //     imovel: true,
-  //     cliente: { select: { endereco: true } },
-  //   },
-  // });
-
   return { contrato, cliente, endereco, enderecoImovel };
 };
 
@@ -61,13 +53,15 @@ export const revogarContrato = async (id: number) => {
 };
 
 export const alterarContrato = async (id: number, contrato: Contrato) => {
-  return await prisma.contrato.update({
+  const contratoResponse = await prisma.contrato.update({
     where: { id },
     data: {
       valor: contrato.valor,
       vencimento: contrato.vencimento,
       tipo: contrato.tipo,
-      imovelId: contrato.imovelId,
+      dataAssinatura: contrato.dataAssinatura,
     },
   });
+
+  return contratoResponse;
 };

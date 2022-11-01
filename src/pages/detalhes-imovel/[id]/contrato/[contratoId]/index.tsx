@@ -17,7 +17,9 @@ const Contrato: React.FC = ({ contratoId }: any) => {
   const [contrato, setContrato] = useState<any>(null);
 
   const redirectToChangeContract = () => {
-    router.push(`/detalhes-imovel/${router.query.id}/alterar-contrato`);
+    router.push(
+      `/detalhes-imovel/${router.query.id}/contrato/${contratoId}/alterar-contrato`
+    );
   };
 
   const cancelContract = () => {

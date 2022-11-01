@@ -30,3 +30,13 @@ export const revogarContrato = async (id) => {
     console.log(e);
   }
 };
+
+export const alterarContrato = async (id, contrato) => {
+  try {
+    const response = await api.put(`/contrato/${id}`, { contrato });
+
+    return response;
+  } catch (e) {
+    console.log(e);
+  }
+};

@@ -87,7 +87,7 @@ const FormularioContrato = ({ onSubmit }) => {
                   onChange={(value: any) =>
                     setContrato((prevState) => ({
                       ...prevState,
-                      vencimento: new Date(value.target.value),
+                      vencimento: new Date(value),
                     }))
                   }
                   renderInput={(params) => <TextField {...params} />}
@@ -103,7 +103,7 @@ const FormularioContrato = ({ onSubmit }) => {
                   onChange={(value: any) =>
                     setContrato((prevState) => ({
                       ...prevState,
-                      dataAssinatura: new Date(value.target.value),
+                      dataAssinatura: new Date(value),
                     }))
                   }
                   renderInput={(params) => <TextField {...params} />}
@@ -178,7 +178,7 @@ const FormularioContrato = ({ onSubmit }) => {
                   onChange={(value: any) =>
                     setCliente((prevState) => ({
                       ...prevState,
-                      dataNascimento: new Date(value.target.value),
+                      dataNascimento: new Date(value),
                     }))
                   }
                   renderInput={(params) => <TextField {...params} />}

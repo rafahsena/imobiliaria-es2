@@ -22,7 +22,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "PUT") {
     try {
       await alterarContrato(Number(id), req.body);
-      return res.status(200);
+      return res.status(200).json(true);
     } catch (e) {
       res
         .status(404)
