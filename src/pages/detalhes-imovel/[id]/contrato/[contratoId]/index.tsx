@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import ModalRevogarContrato from "src/views/utils/ModalRevogarContrato";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
-import { verContrato } from "src/services/contrato";
+import { revogarContrato, verContrato } from "src/services/contrato";
 import { GetServerSideProps } from "next";
 
 // import { Container } from './styles';
@@ -24,11 +24,17 @@ const Contrato: React.FC = ({ contratoId }: any) => {
     setOpenModalRevogarContrato(true);
   };
 
+  const handleRevogarContrato = async () => {
+    try {
+      await revogarContrato(contratoId);
+
+      setOpenModalRevogarContrato(false);
+    } catch (e) {}
+  };
+
   const handleGetContrato = async () => {
     try {
       const response = await verContrato(contratoId);
-
-      console.log(response);
 
       setContrato(response);
     } catch (e) {
@@ -68,6 +74,7 @@ const Contrato: React.FC = ({ contratoId }: any) => {
       <ModalRevogarContrato
         visible={openModalRevogarContrato}
         closeModal={() => setOpenModalRevogarContrato(false)}
+        onAction={handleRevogarContrato}
       />
     </>
   );

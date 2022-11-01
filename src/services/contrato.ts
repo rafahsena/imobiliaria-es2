@@ -18,6 +18,15 @@ export const verContrato = async (id) => {
     const response = await api.get(`/contrato/${id}`);
     return response.data;
   } catch (e) {
-    return [];
+    return {};
+  }
+};
+
+export const revogarContrato = async (id) => {
+  try {
+    const response = await api.delete(`/contrato/${id}`);
+    return response;
+  } catch (e) {
+    console.log(e);
   }
 };
