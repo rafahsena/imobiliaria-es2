@@ -7,13 +7,17 @@ export const listarContratos = async () => {
 };
 
 export const getContrato = async (id: number) => {
-  return await prisma.contrato.findFirst({
+  const response = await prisma.contrato.findFirst({
     where: { id },
     include: {
       cliente: true,
       imovel: { include: { endereco: true, funcionario: true } },
     },
   });
+
+  console.log(response);
+
+  return response;
 };
 
 export const emitirContrato = async (body: {
@@ -52,14 +56,19 @@ export const revogarContrato = async (id: number) => {
   });
 };
 
-export const alterarContrato = async (id: number, contrato: Contrato) => {
+export const alterarContrato = async (
+  id: number,
+  body: { contrato: Contrato }
+) => {
+  const { contrato } = body;
   const contratoResponse = await prisma.contrato.update({
     where: { id },
     data: {
       valor: contrato.valor,
-      vencimento: contrato.vencimento,
+      vencimento: new Date(contrato.vencimento),
       tipo: contrato.tipo,
-      dataAssinatura: contrato.dataAssinatura,
+      imovelId: contrato.imovelId,
+      dataAssinatura: new Date(contrato.dataAssinatura),
     },
   });
 
