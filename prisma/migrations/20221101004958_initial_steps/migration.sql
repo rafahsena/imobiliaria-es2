@@ -98,12 +98,10 @@ CREATE TABLE "Funcionario" (
     "nome" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "password" TEXT NOT NULL,
+    "token" TEXT,
 
     CONSTRAINT "Funcionario_pkey" PRIMARY KEY ("id")
 );
-
--- CreateIndex
-CREATE UNIQUE INDEX "Anuncio_imovelId_key" ON "Anuncio"("imovelId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Funcionario_email_key" ON "Funcionario"("email");
@@ -121,7 +119,7 @@ ALTER TABLE "Imovel" ADD CONSTRAINT "Imovel_funcionarioId_fkey" FOREIGN KEY ("fu
 ALTER TABLE "Anuncio" ADD CONSTRAINT "Anuncio_imovelId_fkey" FOREIGN KEY ("imovelId") REFERENCES "Imovel"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "InteressadosOnAnuncios" ADD CONSTRAINT "InteressadosOnAnuncios_interessadoId_fkey" FOREIGN KEY ("interessadoId") REFERENCES "Interessado"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "InteressadosOnAnuncios" ADD CONSTRAINT "InteressadosOnAnuncios_interessadoId_fkey" FOREIGN KEY ("interessadoId") REFERENCES "Interessado"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "InteressadosOnAnuncios" ADD CONSTRAINT "InteressadosOnAnuncios_anuncioId_fkey" FOREIGN KEY ("anuncioId") REFERENCES "Anuncio"("id") ON DELETE CASCADE ON UPDATE CASCADE;

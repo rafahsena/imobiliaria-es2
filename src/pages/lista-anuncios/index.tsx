@@ -3,7 +3,6 @@ import { useContext, useEffect, useState } from "react";
 import { SearchContext } from "src/@core/context/searchContext";
 import useDebounce from "src/@core/hooks/useDebounce";
 import Loading from "src/layouts/components/Loading";
-import mock from "src/mock";
 import { Anuncio } from "src/models";
 import { listarAnuncios } from "src/services/anuncios";
 import CardAnuncio from "src/views/cards/CardAnuncioLista";
