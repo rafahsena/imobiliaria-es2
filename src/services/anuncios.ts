@@ -22,7 +22,6 @@ export const cadastrarAnuncio = async (anuncio) => {
 export const verAnuncio = async (id) => {
   try {
     const response = await api.get(`/anuncios/${id}`);
-    console.log(response.data);
     return response.data;
   } catch (e) {
     throw new Error();

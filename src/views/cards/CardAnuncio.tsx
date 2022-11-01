@@ -20,6 +20,7 @@ const AdCard = ({
 }: Anuncio) => {
   const funcionario = useContext(UserContext);
   const isLogged = funcionario?.user?.id;
+  console.log(isLogged);
   const { moneyFormat, areaFormat, dateFormat } = conversions();
   return (
     <Container>
@@ -62,8 +63,8 @@ const AdCard = ({
           </Link>
         </Grid>
         <Grid item xl={3}>
-          <Link href={`/detalhes-anuncio/${id}/interessados`}>
-            {isLogged && (
+          {isLogged && (
+            <Link href={`/detalhes-anuncio/${id}/interessados`}>
               <Button
                 variant="contained"
                 sx={{
@@ -74,8 +75,8 @@ const AdCard = ({
               >
                 Ver Interessados
               </Button>
-            )}
-          </Link>
+            </Link>
+          )}
         </Grid>
       </Grid>
     </Container>

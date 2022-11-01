@@ -116,23 +116,27 @@ const UserDropdown = () => {
                 variant="body2"
                 sx={{ fontSize: "0.8rem", color: "text.disabled" }}
               >
-                Admin
+                {user?.id ? "Funcionário" : "Visitante"}
               </Typography>
             </Box>
           </Box>
         </Box>
-        <Divider />
 
-        <MenuItem sx={{ py: 2 }} onClick={() => handleDropdownClose("/")}>
-          <LogoutVariant
-            sx={{
-              marginRight: 2,
-              fontSize: "1.375rem",
-              color: "text.secondary",
-            }}
-          />
-          Logout
-        </MenuItem>
+        {user?.id && (
+          <>
+            <Divider />
+            <MenuItem sx={{ py: 2 }} onClick={() => handleDropdownClose("/")}>
+              <LogoutVariant
+                sx={{
+                  marginRight: 2,
+                  fontSize: "1.375rem",
+                  color: "text.secondary",
+                }}
+              />
+              Logout
+            </MenuItem>
+          </>
+        )}
       </Menu>
     </Fragment>
   );
