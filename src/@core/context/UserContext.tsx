@@ -1,5 +1,6 @@
 import { createContext, useState } from "react";
 import { Funcionario } from "src/models";
+import { getUser } from "src/services/login";
 
 export type UserContextProps = {
   user: Funcionario;
@@ -10,15 +11,9 @@ export const UserContext = createContext<UserContextProps>(
   {} as UserContextProps
 );
 
-const userMock: Funcionario = {
-  id: 6,
-  nome: "Rafael Sena",
-  email: "rafael.sena@imobiliaria.com",
-  password: "123456",
-};
-
 const UserProvider: React.FC = ({ children }) => {
-  const [user, setUser] = useState<Funcionario>(userMock);
+  const data = getUser();
+  const [user, setUser] = useState<Funcionario>(data as Funcionario);
   return (
     <UserContext.Provider value={{ user, setUser }}>
       {children}

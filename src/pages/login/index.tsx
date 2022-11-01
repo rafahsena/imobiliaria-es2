@@ -1,5 +1,5 @@
 // ** React Imports
-import { ReactNode, useContext, useState } from "react";
+import { ReactNode, useContext, useEffect, useState } from "react";
 
 // ** MUI Components
 import Box from "@mui/material/Box";
@@ -16,6 +16,8 @@ import MuiFormControlLabel, {
 // ** Layout Import
 import BlankLayout from "src/@core/layouts/BlankLayout";
 import { UserContext } from "src/@core/context/UserContext";
+import { login } from "src/services/login";
+import router from "next/router";
 
 // ** Demo Imports
 
@@ -49,19 +51,17 @@ const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
 
-  const user = useContext(UserContext);
-  console.log(user);
+  const { setUser } = useContext(UserContext);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const request = {
-        email,
-        senha,
-      };
-
-      console.log(request);
+      const user = await login({ email, password: senha });
+      if (user) {
+        setUser(user);
+        router.push("/lista-imoveis");
+      }
     } catch (e) {
       console.log(e);
     }

@@ -1,5 +1,5 @@
 // ** React Imports
-import { useState, SyntheticEvent, Fragment } from "react";
+import { useState, SyntheticEvent, Fragment, useContext } from "react";
 
 // ** Next Import
 import { useRouter } from "next/router";
@@ -18,6 +18,8 @@ import Typography from "@mui/material/Typography";
 
 import LogoutVariant from "mdi-material-ui/LogoutVariant";
 import AccountOutline from "mdi-material-ui/AccountOutline";
+import { logout } from "src/services/login";
+import { UserContext } from "src/@core/context/UserContext";
 
 // ** Styled Components
 const BadgeContentSpan = styled("span")(({ theme }) => ({
@@ -34,6 +36,7 @@ const UserDropdown = () => {
 
   // ** Hooks
   const router = useRouter();
+  const { user, setUser } = useContext(UserContext);
 
   const handleDropdownOpen = (event: SyntheticEvent) => {
     setAnchorEl(event.currentTarget);
@@ -41,6 +44,8 @@ const UserDropdown = () => {
 
   const handleDropdownClose = (url?: string) => {
     if (url) {
+      logout();
+      setUser({});
       router.push(url);
     }
     setAnchorEl(null);
@@ -104,7 +109,9 @@ const UserDropdown = () => {
                 flexDirection: "column",
               }}
             >
-              <Typography sx={{ fontWeight: 600 }}>John Doe</Typography>
+              <Typography sx={{ fontWeight: 600 }}>
+                {user?.nome || "Usuário"}
+              </Typography>
               <Typography
                 variant="body2"
                 sx={{ fontSize: "0.8rem", color: "text.disabled" }}
@@ -114,19 +121,9 @@ const UserDropdown = () => {
             </Box>
           </Box>
         </Box>
-        <Divider sx={{ mt: 0, mb: 1 }} />
-        <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose()}>
-          <Box sx={styles}>
-            <AccountOutline sx={{ marginRight: 2 }} />
-            Perfil
-          </Box>
-        </MenuItem>
         <Divider />
 
-        <MenuItem
-          sx={{ py: 2 }}
-          onClick={() => handleDropdownClose("/pages/login")}
-        >
+        <MenuItem sx={{ py: 2 }} onClick={() => handleDropdownClose("/")}>
           <LogoutVariant
             sx={{
               marginRight: 2,
