@@ -55,7 +55,7 @@ async function populateDB() {
 
     const imovelTipo = (await prisma.tipo.findMany({
         where: {
-            nome: 'casa'
+            nome: 'Casa'
         }
     }))[0]
 
@@ -87,7 +87,7 @@ async function populateDB() {
             descricao: '',
             dataDeCriacao: new Date(Date.now()).toISOString(),
             valor: 500_000,
-            tipo: 'Compra',
+            tipo: 'V', // V = venda, A = aluguel
             imovel: {
                 connect: {
                     id: imovel.id

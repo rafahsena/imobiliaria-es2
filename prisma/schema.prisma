@@ -52,7 +52,7 @@ model Anuncio {
   valor         Decimal                  @db.Money
   tipo          String
   imovel        Imovel                   @relation(fields: [imovelId], references: [id], onDelete: Cascade)
-  imovelId      Int                      @unique
+  imovelId      Int
   interessado   InteressadosOnAnuncios[]
 }
 
@@ -61,7 +61,7 @@ model Interessado {
   nome     String
   telefone String
   email    String
-  anuncio  InteressadosOnAnuncios[] 
+  anuncio  InteressadosOnAnuncios[]
 }
 
 model InteressadosOnAnuncios {
@@ -104,5 +104,6 @@ model Funcionario {
   nome     String
   email    String   @unique
   password String
+  token    String?
   imovel   Imovel[]
 }
