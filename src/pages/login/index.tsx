@@ -18,6 +18,7 @@ import BlankLayout from "src/@core/layouts/BlankLayout";
 import { UserContext } from "src/@core/context/UserContext";
 import { login } from "src/services/login";
 import router from "next/router";
+import { LoadingButton } from "@mui/lab";
 
 // ** Demo Imports
 
@@ -50,6 +51,7 @@ const LoginPage = () => {
   // ** State
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const { setUser } = useContext(UserContext);
 
@@ -57,12 +59,15 @@ const LoginPage = () => {
     e.preventDefault();
 
     try {
+      setLoading(true);
       const user = await login({ email, password: senha });
+      setLoading(false);
       if (user) {
         setUser(user);
         router.push("/lista-imoveis");
       }
     } catch (e) {
+      setLoading(false);
       console.log(e);
     }
   };
@@ -117,15 +122,16 @@ const LoginPage = () => {
               onChange={(value) => setSenha(value.target.value)}
             />
 
-            <Button
+            <LoadingButton
               fullWidth
+              loading={loading}
               size="large"
               variant="contained"
               sx={{ marginBottom: 7, marginTop: 7 }}
               type="submit"
             >
               Login
-            </Button>
+            </LoadingButton>
           </form>
         </CardContent>
       </Card>
