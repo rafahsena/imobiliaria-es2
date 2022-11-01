@@ -10,6 +10,7 @@ import { UserContext } from "src/@core/context/UserContext";
 import AddressCard from "./AddressCard";
 
 const AdCard = ({
+  id,
   titulo,
   descricao,
   tipo,
@@ -47,7 +48,7 @@ const AdCard = ({
           {imovel?.endereco && <AddressCard endereco={imovel.endereco} />}
         </Grid>
         <Grid item xl={5}>
-          <Link href={`/detalhes-anuncio/${imovel?.id}/interesse`}>
+          <Link href={`/detalhes-anuncio/${id}/interesse`}>
             <Button
               variant="contained"
               sx={{
@@ -61,7 +62,7 @@ const AdCard = ({
           </Link>
         </Grid>
         <Grid item xl={3}>
-          <Link href={`/detalhes-anuncio/${imovel?.id}/interessados`}>
+          <Link href={`/detalhes-anuncio/${id}/interessados`}>
             {isLogged && (
               <Button
                 variant="contained"
